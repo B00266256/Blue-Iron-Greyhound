@@ -111,6 +111,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="InteractiveTestComponent.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="TestComponent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="InteractiveTestComponent.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
