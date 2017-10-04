@@ -1,6 +1,8 @@
 /*=============================================================================
 * Project: Blue Iron Greyhound
 * 
+
+commentcomment chloe
 =============================================================================*/
 
 #include "TestComponent.h"
@@ -8,6 +10,7 @@
 
 int main(int argc, char *argv[])
 {
+	int i = 0; //test
 	GameObject *testObj = new GameObject("testObj");
 	TestComponent *testComponentA = new TestComponent("testComponentA");
 	InteractiveTestComponent *testComponentB = new InteractiveTestComponent("testComponentB");
