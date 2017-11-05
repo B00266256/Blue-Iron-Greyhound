@@ -18,7 +18,7 @@ void openglRenderer::init()
 
 void openglRenderer::clearScreen()
 {
-	glClearColor(1, 0, 0, 1);					//Sets glClearColour and uses GlClear to clear screen and depth buffer
+	glClearColor(1, 1, 0, 1);					//Sets glClearColour and uses GlClear to clear screen and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
