@@ -1,10 +1,12 @@
 #include "openglRenderer.h"
 
+
 openglRenderer:: openglRenderer(Window win)
 {
 	
 	std::cout << "glRenderer initialised" << std::endl;
 	createWindow(win);
+	setupRenderContext();
 	init();
 
 }
@@ -13,6 +15,13 @@ void openglRenderer::init()
 {
 	
 }
+
+void openglRenderer::clearScreen()
+{
+	glClearColor(1, 0, 0, 1);					//Sets glClearColour and uses GlClear to clear screen and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
 
 void openglRenderer::update()
 {
@@ -23,7 +32,7 @@ void openglRenderer::setupRenderContext()
 {
 		
 		//Request an OpenGL 3.0 context.
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	
@@ -46,6 +55,7 @@ void openglRenderer::setupRenderContext()
 
 void openglRenderer::createWindow(Window win)
 {
+	
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)														//initialise SDL
 	{
 		std::cout << "SDL failed" << std::endl;
@@ -54,7 +64,7 @@ void openglRenderer::createWindow(Window win)
 	{
 		win.createWindow(800, 600, "Iron Rifts");											//Create window (inside class window)
 
-		setupRenderContext();																//Create openGLs rendering context
+																	//Create openGLs rendering context
 	}
 
 }

@@ -29,7 +29,7 @@ public:
 	void createWindow(Window win);			//initialises SDL and creates a window with openGL context
 	void setupRenderContext();				//Defines the context and initialises GLEW
 
-
+	void clearScreen();
 private:
 	
 	//perspective variables

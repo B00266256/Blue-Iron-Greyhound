@@ -17,8 +17,7 @@ IronRifts::IronRifts()
 void IronRifts::draw()
 {
 	
-	window.clearScreen();																//Sets glClearColour and uses GlClear to clear screen and depth buffer
-
+	renderer->clearScreen();
 	/*
 	Draw in here
 	This will probably call a class that is defining our game
@@ -38,7 +37,7 @@ void IronRifts::update()
 	{
 		if (e.type == SDL_QUIT)
 		{
-			window.destroyWindow();
+			window.destroyWindow();							//Game no longer running so destroy everything.
 			running = false;
 		}
 	}
@@ -56,5 +55,5 @@ void IronRifts::gameLoop()
 		draw();
 	}
 
-	window.destroyWindow();					//Game no longer running so destroy everything.
+	
 }

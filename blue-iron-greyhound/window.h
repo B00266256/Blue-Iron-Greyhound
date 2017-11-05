@@ -1,7 +1,5 @@
 
 #include "SDL.h"
-#include <GL/glew.h>
-#include <string>
 #include <iostream>
 
 
@@ -18,8 +16,8 @@ public:
 	void clearScreen();
 
 private:
-	SDL_Window* window;													//Window Handle
-	SDL_GLContext glContext;											//Context Handle
-
+	SDL_Window* window;												//Window Handle
+	SDL_GLContext glContext;										//Context Handle
+	
 };
 #endif
