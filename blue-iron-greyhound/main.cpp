@@ -5,13 +5,26 @@
 commentcomment chloe
 =============================================================================*/
 
+#if _DEBUG
+#pragma comment(linker, "/subsystem:\"console\" /entry:\"WinMainCRTStartup\"")
+#endif
+
 #include "TestComponent.h"
 #include "InteractiveTestComponent.h"
+#include "openglRenderer.h"
+
+#include "SDL.h"
+
+
+
 
 int main(int argc, char *argv[])
 {
-	int i = 0; //test
-	GameObject *testObj = new GameObject("testObj");
+
+	//IronRifts game;
+	RenderingSystem* renderer = new openglRenderer();
+
+	/*GameObject *testObj = new GameObject("testObj");
 	TestComponent *testComponentA = new TestComponent("testComponentA");
 	InteractiveTestComponent *testComponentB = new InteractiveTestComponent("testComponentB");
 
@@ -22,9 +35,22 @@ int main(int argc, char *argv[])
 	testObj->update();
 	testObj->getComponent<InteractiveTestComponent>()->update();
 	testObj->update();
-
+	*/
 	int i = 1;
-	do {} while (i != 0);
+	
+	SDL_Event sdlEvent;
+	do 
+	{
+		while (SDL_PollEvent(&sdlEvent)) {				//This poll event should not be here since it couples the main to SDL. 
+			if (sdlEvent.type == SDL_QUIT)
+				i = 0;
+		}
+
+		renderer->draw();
+	
+	} while (i != 0);
+
+
 
 	return 0;
 }

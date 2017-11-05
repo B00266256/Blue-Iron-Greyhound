@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{42f05ca1-04a5-49c6-8e8f-cae5a0a806c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering System">
+      <UniqueIdentifier>{ce392000-16b4-46c5-9f32-4c17ec680776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CompSysTestClasses">
+      <UniqueIdentifier>{9b498d4e-5b46-4212-b4a1-2f124caa7c5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingSystem">
+      <UniqueIdentifier>{4bd1bfee-61ad-4dfa-b5d1-b3975b1568b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -21,14 +33,20 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InteractiveTestComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="openglRenderer.h">
+      <Filter>Header Files\Rendering System</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingSystem.h">
+      <Filter>Header Files\Rendering System</Filter>
+    </ClInclude>
     <ClInclude Include="TestComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\CompSysTestClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractiveTestComponent.h">
+      <Filter>Header Files\CompSysTestClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -38,14 +56,17 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InteractiveTestComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="openglRenderer.cpp">
+      <Filter>Source Files\RenderingSystem</Filter>
     </ClCompile>
     <ClCompile Include="TestComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files\CompSysTestClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractiveTestComponent.cpp">
+      <Filter>Header Files\CompSysTestClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
