@@ -1,11 +1,11 @@
 #include "openglRenderer.h"
 
 
-openglRenderer:: openglRenderer(Window win)
+openglRenderer:: openglRenderer()
 {
 	
 	std::cout << "glRenderer initialised" << std::endl;
-	createWindow(win);
+	createWindow();
 	setupRenderContext();
 	init();
 
@@ -16,15 +16,19 @@ void openglRenderer::init()
 	
 }
 
-void openglRenderer::clearScreen()
-{
-	glClearColor(1, 1, 0, 1);					//Sets glClearColour and uses GlClear to clear screen and depth buffer
-	glClear(GL_COLOR_BUFFER_BIT);
-}
 
 
 void openglRenderer::update()
 {
+
+}
+
+void openglRenderer::draw()
+{
+	clearScreen();
+
+
+	swapBuffers();
 
 }
 
@@ -53,7 +57,7 @@ void openglRenderer::setupRenderContext()
 
 }
 
-void openglRenderer::createWindow(Window win)
+void openglRenderer::createWindow()
 {
 	
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)														//initialise SDL
@@ -62,7 +66,15 @@ void openglRenderer::createWindow(Window win)
 	}
 	else
 	{
-		win.createWindow(800, 600, "Iron Rifts");											//Create window (inside class window)
+
+		window = SDL_CreateWindow("iron rifts", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,	//createWindow(window title, pos on screen, pos on screan, width, height..)
+			800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+
+		glContext = SDL_GL_CreateContext(window);
+		SDL_GL_MakeCurrent(window, glContext);
+
+		if (!window)			 // Check window was created OK
+			std::cout << "Window not initialized correctly" << std::endl;											//Create window (inside class window)
 
 																	//Create openGLs rendering context
 	}
@@ -73,3 +85,23 @@ openglRenderer::~openglRenderer()
 {
 	delete this;
 }
+
+
+void openglRenderer::destroyWindow()
+{
+	SDL_GL_DeleteContext(glContext);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
+void openglRenderer::swapBuffers()
+{
+	SDL_GL_SwapWindow(window);
+}
+
+void openglRenderer::clearScreen()
+{
+	glClearColor(1, 1, 0, 1);					//Sets glClearColour and uses GlClear to clear screen and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+

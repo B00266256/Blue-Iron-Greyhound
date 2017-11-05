@@ -124,22 +124,18 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InteractiveTestComponent.h" />
-    <ClInclude Include="IronRifts.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="openglRenderer.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="TestComponent.h" />
-    <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InteractiveTestComponent.cpp" />
-    <ClCompile Include="IronRifts.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openglRenderer.cpp" />
     <ClCompile Include="TestComponent.cpp" />
-    <ClCompile Include="window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

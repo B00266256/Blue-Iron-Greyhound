@@ -10,11 +10,11 @@ class RenderingSystem : public Component
 {
 public:
 	RenderingSystem() {}
-	RenderingSystem(Window win) {}
 	virtual ~RenderingSystem() {};
 
 	virtual void init() = 0;
 	virtual void update() = 0;
+	virtual void draw() = 0;
 
 	
 

@@ -42,17 +42,11 @@
     <ClInclude Include="RenderingSystem.h">
       <Filter>Header Files\Rendering System</Filter>
     </ClInclude>
-    <ClInclude Include="InteractiveTestComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TestComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\CompSysTestClasses</Filter>
     </ClInclude>
-    <ClInclude Include="IronRifts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="window.h">
-      <Filter>Header Files\Rendering System</Filter>
+    <ClInclude Include="InteractiveTestComponent.h">
+      <Filter>Header Files\CompSysTestClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -65,9 +59,6 @@
     <ClCompile Include="openglRenderer.cpp">
       <Filter>Source Files\RenderingSystem</Filter>
     </ClCompile>
-    <ClCompile Include="window.cpp">
-      <Filter>Source Files\RenderingSystem</Filter>
-    </ClCompile>
     <ClCompile Include="TestComponent.cpp">
       <Filter>Header Files\CompSysTestClasses</Filter>
     </ClCompile>
@@ -75,9 +66,6 @@
       <Filter>Header Files\CompSysTestClasses</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="IronRifts.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
