@@ -16,9 +16,8 @@ IronRifts::IronRifts()
 
 void IronRifts::draw()
 {
-	glEnable(GL_CULL_FACE);
-	glClearColor(1.0f, 0.5f, 0.5f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	window.clearScreen();																//Sets glClearColour and uses GlClear to clear screen and depth buffer
 
 	/*
 	Draw in here
