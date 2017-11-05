@@ -78,7 +78,7 @@
       <AdditionalIncludeDirectories>..\..\Dev\SDL2-2.0.5\include;..\..\Dev\glm-0.9.8.5;..\..\Dev\glew-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>..\..\Dev\SDL2-2.0.5\lib\x86;..\..\Dev\glew-2.0.0\lib\Debug\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Dev\SDL2-2.0.5\lib\x86;..\..\Dev\glew-2.0.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
