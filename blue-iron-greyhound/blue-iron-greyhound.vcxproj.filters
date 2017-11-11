@@ -22,8 +22,8 @@
     <Filter Include="Header Files\CompSysTestClasses">
       <UniqueIdentifier>{9b498d4e-5b46-4212-b4a1-2f124caa7c5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\RenderingSystem">
-      <UniqueIdentifier>{4bd1bfee-61ad-4dfa-b5d1-b3975b1568b3}</UniqueIdentifier>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{b35e5da8-4f7f-4469-a51b-563369dd4b9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +48,18 @@
     <ClInclude Include="InteractiveTestComponent.h">
       <Filter>Header Files\CompSysTestClasses</Filter>
     </ClInclude>
+    <ClInclude Include="AssimpLoader.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenglUtils.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshComponent.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLGLTextureLoader.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -55,9 +67,6 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="openglRenderer.cpp">
-      <Filter>Source Files\RenderingSystem</Filter>
     </ClCompile>
     <ClCompile Include="TestComponent.cpp">
       <Filter>Header Files\CompSysTestClasses</Filter>
@@ -68,5 +77,36 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="openglRenderer.cpp">
+      <Filter>Header Files\Rendering System</Filter>
+    </ClCompile>
+    <ClCompile Include="AssimpLoader.cpp">
+      <Filter>Header Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenglUtils.cpp">
+      <Filter>Header Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLGLTextureLoader.cpp">
+      <Filter>Header Files\Utilities</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="textured.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="minimal.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="minimal.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="textured.vert">
+      <Filter>Resource Files</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

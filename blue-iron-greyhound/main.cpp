@@ -9,11 +9,16 @@ commentcomment chloe
 #pragma comment(linker, "/subsystem:\"console\" /entry:\"WinMainCRTStartup\"")
 #endif
 
-#include "TestComponent.h"
-#include "InteractiveTestComponent.h"
-#include "openglRenderer.h"
+//#include "TestComponent.h"
+//#include "InteractiveTestComponent.h"
+#include "OpenglRenderer.h"
+#include "GameObject.h"
 
+//Temp includes for testing during development
 #include "SDL.h"
+#include <glm/glm.hpp>
+
+class RenderingSystem;
 
 
 
@@ -21,7 +26,7 @@ commentcomment chloe
 int main(int argc, char *argv[])
 {
 
-	//IronRifts game;
+	
 	RenderingSystem* renderer = new openglRenderer();
 
 	/*GameObject *testObj = new GameObject("testObj");
@@ -36,21 +41,41 @@ int main(int argc, char *argv[])
 	testObj->getComponent<InteractiveTestComponent>()->update();
 	testObj->update();
 	*/
-	int i = 1;
+
+	GameObject *firstObject = new GameObject("Collada Cube");
+
+	MeshComponent* meshComponent = new MeshComponent("First Mesh");
+	meshComponent->setRenderer(renderer);
+	meshComponent->loadObject("cube.dae");
+	meshComponent->loadMesh();
+	meshComponent->loadTexture("fabric.bmp");
+	meshComponent->setTranslation(glm::vec3(-10.0f, -0.1f, -10.0f));
+	meshComponent->setScaling(glm::vec3(0.05, 0.05, 0.05));
+
+	firstObject->addComponent(meshComponent);
+	
+
+
+	bool running = true;
 	
 	SDL_Event sdlEvent;
 	do 
 	{
-		while (SDL_PollEvent(&sdlEvent)) {				//This poll event should not be here since it couples the main to SDL. 
+		while (SDL_PollEvent(&sdlEvent)) //This poll event should not be here since it couples the main to SDL. 
+		{				
 			if (sdlEvent.type == SDL_QUIT)
-				i = 0;
+			{
+				running = false;
+			}
 		}
 
-		renderer->draw();
-	
-	} while (i != 0);
+		firstObject->update();
+		
+		
+	} while (running);
 
-
+	delete meshComponent;
+	delete firstObject;
 
 	return 0;
 }

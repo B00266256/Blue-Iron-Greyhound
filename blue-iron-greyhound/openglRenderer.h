@@ -1,18 +1,24 @@
+#ifndef openglRenderer_H
+#define openglRenderer_H
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <stack>
-
 #include <SDL.h>
 #include <GL/glew.h>
 #include <iostream>
 
-
 #include "RenderingSystem.h"
+#include "MeshComponent.h"
 
-#ifndef openglRenderer_H
-#define openglRenderer_H
-#pragma once
+#include "AssimpLoader.h"
+#include "OpenglUtils.h"
+#include "SDLGLTextureLoader.h"
+
+
+#define DEG_TO_RADIAN 0.017453293
+
 
 class openglRenderer : public RenderingSystem
 {
@@ -24,7 +30,10 @@ public:
 
 	void init();
 	void update();
-	void draw();
+	void draw(MeshComponent* mesh);
+	void loadMesh(MeshComponent* mesh);
+	void loadTexture(MeshComponent* mesh,  char * filename);
+	void loadObject(MeshComponent* mesh, const char * filename);
 
 	void createWindow();					//initialises SDL and creates a window with openGL context
 	void setupRenderContext();				//Defines the context and initialises GLEW
@@ -32,18 +41,19 @@ public:
 	void destroyWindow();
 	void swapBuffers();
 	void clearScreen();
+
 	
+
+	//Temporary until this is put in its own class. Probably a transform class or something
+	glm::vec3 moveForward(glm::vec3 pos, GLfloat angle, GLfloat d);
+	glm::vec3 moveRight(glm::vec3 pos, GLfloat angle, GLfloat d);
 private:
 	SDL_Window* window;												//Window Handle
 	SDL_GLContext glContext;										//Context Handle
 
-	//perspective variables
-	//Not used right now. Probably won't be used in this class
-	std::stack<glm::mat4> mvStack;
-	glm::mat4 proj;
-	glm::mat4 modelview;
+	GLuint shaderProgram;
+
+	GLfloat r;
 	glm::vec3 eye;
-	glm::vec3 up;
-	glm::vec3 at;
 };
 #endif
