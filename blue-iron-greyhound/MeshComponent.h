@@ -37,8 +37,6 @@ public:
 	int getMeshIndexCount();
 	int getTextureID();
 
-
-
 	//Sets
 	void setMesh(int ID) { meshID = ID; }
 	void setTexture(int ID) { textureID = ID; }
@@ -63,7 +61,7 @@ private:
 	
 	int meshID;
 	int textureID;
-	//material...
+	//int material...
 	
 	
 };

@@ -43,7 +43,7 @@ glm::vec3 openglRenderer::moveRight(glm::vec3 pos, GLfloat angle, GLfloat d) {
 
 void openglRenderer::loadMesh(MeshComponent* mesh)
 {
-	GLuint meshObject = OpenglUtils::createMesh(mesh->getNumVerts(), mesh->getVerts(), mesh->getColours(), mesh->getNorms(), mesh->getTexCoords(), mesh->getMeshIndexCount(), (GLuint*)mesh->getIndices());
+	GLuint meshObject = OpenglUtils::createMesh((GLuint)mesh->getNumVerts(), (GLfloat*)mesh->getVerts(), (GLfloat*)mesh->getColours(), (GLfloat*)mesh->getNorms(), (GLfloat*)mesh->getTexCoords(), (GLuint)mesh->getMeshIndexCount(), (GLuint*)mesh->getIndices());
 
 
 	mesh->setMesh(meshObject);
@@ -64,10 +64,15 @@ void openglRenderer::loadObject(MeshComponent* mesh, const char * filename)
 	std::vector<float> colours;
 
 	//Load objects into temporary containers
-	AssimpLoader::loadObjectData("cube.dae", verts, norms, texCoords, indices, colours);
+	AssimpLoader::loadObjectData(filename, verts, norms, texCoords, indices, colours);
 
 	//Pass temporary containers into mesh to set the meshes values
 	mesh->setMeshParameters(verts, norms, texCoords, indices, colours);
+
+	
+
+	//test values being produced by asssimp
+	cout << "Number of Verts: " << mesh->getNumVerts() << endl;
 
 	if (verts.empty())
 	{
@@ -82,9 +87,9 @@ void openglRenderer::loadObject(MeshComponent* mesh, const char * filename)
 
 void openglRenderer::draw(MeshComponent* mesh)
 {
-	clearScreen();
-	glDepthMask(GL_TRUE);
+	
 
+	//Temporary controls to help with render debugging
 	const Uint8 *keys = SDL_GetKeyboardState(NULL);
 	if (keys[SDL_SCANCODE_W]) eye = moveForward(eye, r, 0.01f);
 	if (keys[SDL_SCANCODE_S]) eye = moveForward(eye, r, -0.01f);
@@ -96,46 +101,31 @@ void openglRenderer::draw(MeshComponent* mesh)
 	if (keys[SDL_SCANCODE_COMMA]) r -= 0.1f;
 	if (keys[SDL_SCANCODE_PERIOD]) r += 0.1f;
 
-
+	//View stuff
 	stack<glm::mat4> mvStack;
-	
 	glm::mat4 projection(1.0);
 	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 800.0f / 600.0f, 1.0f, 150.0f);
-
 	GLfloat scale(1.0f); 
-
 	glm::mat4 modelview(1.0); 
 	mvStack.push(modelview);
-
-	//glm::vec3 eye(-2.0f, 1.0f, 8.0f);
 	glm::vec3 up(0.0f, 1.0f, 0.0f);
-
 	glm::vec3 at = moveForward(eye, r, 1.0f);
 	mvStack.top() = glm::lookAt(eye, at, up);
 
-
-	
-
-
+	//Draw code
 	glUseProgram(shaderProgram);
 	OpenglUtils::setUniformMatrix4fv(shaderProgram, "projection", glm::value_ptr(projection));
 
-	
 	glBindTexture(GL_TEXTURE_2D, mesh->getTextureID());
 	mvStack.push(mvStack.top());
 	mvStack.top() = glm::translate(mvStack.top(), mesh->getTranslation());
 	mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
 	OpenglUtils::setUniformMatrix4fv(shaderProgram, "modelview", glm::value_ptr(mvStack.top()));
 	//OpenglUtils::setMaterial(shaderProgram, mesh->getMaterial);
-	//OpenglUtils::drawIndexedMesh(mesh->getMeshID(), mesh->getMeshIndexCount(), GL_TRIANGLES);
-	OpenglUtils::drawMesh(mesh->getMeshID(), mesh->getNumVerts(), GL_QUADS);
-	mvStack.pop();
-
+	OpenglUtils::drawIndexedMesh(mesh->getMeshID(), mesh->getMeshIndexCount(), GL_TRIANGLES);
 	mvStack.pop();
 
 	
-
-	swapBuffers();
 
 }
 

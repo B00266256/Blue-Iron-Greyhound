@@ -11,8 +11,6 @@ This is a complete rip off of rt3d
 #include <string>
 using namespace std;
 
-
-
 namespace OpenglUtils
 {
 	struct materialStruct {
