@@ -9,7 +9,21 @@ namespace AssimpLoader
 	//Extracts all the data we need and puts into into our parameters
 	void loadObjectData(const std::string& file, std::vector<float> &verts, std::vector<float> &norms, std::vector<float> &texCoords, std::vector<int> &indices, std::vector<float> &colours)
 	{
-		const aiScene *scene = importFile(file);
+		//const aiScene *scene = importFile(file);
+
+		// Create an instance of the Importer class for loading the object data
+		Assimp::Importer importer;
+
+
+		//loads our file into a scene object so its all accessible.
+		const aiScene* scene = importer.ReadFile(file,
+			aiProcess_CalcTangentSpace |
+			aiProcess_Triangulate |
+			aiProcess_JoinIdenticalVertices |
+			aiProcess_SortByPType);
+
+
+
 
 		if (!scene)
 		{

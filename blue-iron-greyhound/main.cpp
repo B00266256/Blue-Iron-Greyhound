@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 {
 
 	
-	RenderingSystem* renderer = new openglRenderer();
+	
 
 	/*GameObject *testObj = new GameObject("testObj");
 	TestComponent *testComponentA = new TestComponent("testComponentA");
@@ -42,15 +42,18 @@ int main(int argc, char *argv[])
 	testObj->update();
 	*/
 
+
+	RenderingSystem* renderer = new openglRenderer();
+
 	//First Object
 	GameObject *firstObject = new GameObject("Collada Cube");
 
 	MeshComponent* meshComponent = new MeshComponent("First Mesh");
 	meshComponent->setRenderer(renderer);
-	meshComponent->loadObject("cubeUV.dae");
-	meshComponent->loadTexture("fabric.bmp");
+	meshComponent->loadObject("cube_with_2UVs.DAE");
+	meshComponent->loadTexture("scifiFloor.bmp");
 	meshComponent->loadMesh();
-	meshComponent->setTranslation(glm::vec3(-10.0f, -0.1f, -10.0f));
+	meshComponent->setTranslation(glm::vec3(-5.0f, 1.f, -5.0f));
 	//meshComponent->setScaling(glm::vec3(0.05, 0.05, 0.05));
 	meshComponent->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
 
@@ -61,13 +64,16 @@ int main(int argc, char *argv[])
 
 	MeshComponent* secondMesh = new MeshComponent("First Mesh");
 	secondMesh->setRenderer(renderer);
-	secondMesh->loadObject("cubeUV.dae");
-	secondMesh->loadTexture("fabric.bmp");
+	secondMesh->loadObject("cube_with_2UVs.DAE");
+	secondMesh->loadTexture("scifi.bmp");
 	secondMesh->loadMesh();
 	secondMesh->setTranslation(glm::vec3(-10.0f, -1.1f, -10.0f));
 	//meshComponent->setScaling(glm::vec3(0.05, 0.05, 0.05));
 	secondMesh->setScaling(glm::vec3(20.0f, 1.0f, 20.0f));
+
 	secondObject->addComponent(secondMesh);
+
+
 
 	bool running = true;
 	
@@ -87,6 +93,10 @@ int main(int argc, char *argv[])
 		firstObject->update();
 		secondObject->update();
 
+		renderer->update(); //temp keyboard input
+
+		
+
 		renderer->swapBuffers();
 		
 		
@@ -94,6 +104,9 @@ int main(int argc, char *argv[])
 
 	delete meshComponent;
 	delete firstObject;
+	delete renderer;
+	delete secondObject;
+	delete secondMesh;
 
 	return 0;
 }

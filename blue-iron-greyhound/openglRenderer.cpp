@@ -13,8 +13,21 @@ openglRenderer::openglRenderer()
 
 void openglRenderer::init()
 {
-	r = 0.0f;
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	
+	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 800.0f / 600.0f, 1.0f, 150.0f);
+
+	glm::mat4 modelview(1.0);
+	mvStack.push(modelview);
+
 	eye = glm::vec3(-2.0f, 1.0f, 8.0f);
+	at = glm::vec3(0.0f, 1.0f, -1.0f);
+	up = glm::vec3(0.0f, 1.0f, 0.0f);
+	r = 0.0f;
+	
+	at = moveForward(eye, r, 1.0f);
+	mvStack.top() = glm::lookAt(eye, at, up);
 	/*
 	No compilation.
 	Very odd runtime error happening when compiling shaders, needs fixed before any rendering can happen.
@@ -27,6 +40,20 @@ void openglRenderer::init()
 void openglRenderer::update()
 {
 	
+	//Temporary controls to help with render debugging
+	const Uint8 *keys = SDL_GetKeyboardState(NULL);
+	if (keys[SDL_SCANCODE_W]) eye = moveForward(eye, r, 0.01f);
+	if (keys[SDL_SCANCODE_S]) eye = moveForward(eye, r, -0.01f);
+	if (keys[SDL_SCANCODE_A]) eye = moveRight(eye, r, -0.01f);
+	if (keys[SDL_SCANCODE_D]) eye = moveRight(eye, r, 0.01f);
+	if (keys[SDL_SCANCODE_R]) eye.y += 0.01;
+	if (keys[SDL_SCANCODE_F]) eye.y -= 0.01;
+
+	if (keys[SDL_SCANCODE_COMMA]) r -= 0.1f;
+	if (keys[SDL_SCANCODE_PERIOD]) r += 0.1f;
+
+	at = moveForward(eye, r, 1.0f);
+	mvStack.top() = glm::lookAt(eye, at, up);
 }
 
 
@@ -87,31 +114,9 @@ void openglRenderer::loadObject(MeshComponent* mesh, const char * filename)
 
 void openglRenderer::draw(MeshComponent* mesh)
 {
+
+
 	
-
-	//Temporary controls to help with render debugging
-	const Uint8 *keys = SDL_GetKeyboardState(NULL);
-	if (keys[SDL_SCANCODE_W]) eye = moveForward(eye, r, 0.01f);
-	if (keys[SDL_SCANCODE_S]) eye = moveForward(eye, r, -0.01f);
-	if (keys[SDL_SCANCODE_A]) eye = moveRight(eye, r, -0.01f);
-	if (keys[SDL_SCANCODE_D]) eye = moveRight(eye, r, 0.01f);
-	if (keys[SDL_SCANCODE_R]) eye.y += 0.01;
-	if (keys[SDL_SCANCODE_F]) eye.y -= 0.01;
-
-	if (keys[SDL_SCANCODE_COMMA]) r -= 0.1f;
-	if (keys[SDL_SCANCODE_PERIOD]) r += 0.1f;
-
-	//View stuff
-	stack<glm::mat4> mvStack;
-	glm::mat4 projection(1.0);
-	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 800.0f / 600.0f, 1.0f, 150.0f);
-	GLfloat scale(1.0f); 
-	glm::mat4 modelview(1.0); 
-	mvStack.push(modelview);
-	glm::vec3 up(0.0f, 1.0f, 0.0f);
-	glm::vec3 at = moveForward(eye, r, 1.0f);
-	mvStack.top() = glm::lookAt(eye, at, up);
-
 	//Draw code
 	glUseProgram(shaderProgram);
 	OpenglUtils::setUniformMatrix4fv(shaderProgram, "projection", glm::value_ptr(projection));
@@ -194,11 +199,12 @@ void openglRenderer::destroyWindow()
 void openglRenderer::swapBuffers()
 {
 	SDL_GL_SwapWindow(window);
+	
 }
 
 void openglRenderer::clearScreen()
 {
-	glEnable(GL_CULL_FACE);
+	
 	glClearColor(1, 1, 0, 1);					//Sets glClearColour and uses GlClear to clear screen and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

@@ -55,5 +55,10 @@ private:
 
 	GLfloat r;
 	glm::vec3 eye;
+	glm::vec3 at;
+	glm::vec3 up;
+	glm::mat4 projection;
+
+	stack<glm::mat4> mvStack;
 };
 #endif
