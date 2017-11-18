@@ -1,11 +1,11 @@
-#pragma once
+#ifndef RenderingSystem_H
+#define RenderingSystem_H
 
 #include "Component.h"
 class MeshComponent;
+class Camera;
 
-#ifndef RenderingSystem_H
-#define RenderingSystem_H
-#pragma once
+
 
 class RenderingSystem : public Component
 {
@@ -23,6 +23,8 @@ public:
 	virtual void loadMesh(MeshComponent* meshComponent) = 0;
 	virtual void loadTexture(MeshComponent* meshComponent,  char * fileName) = 0;
 	virtual void loadObject(MeshComponent* mesh, const char * filename) = 0;
+
+	Camera* camera;
 private:
 
 	

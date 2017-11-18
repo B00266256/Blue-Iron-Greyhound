@@ -244,7 +244,7 @@ namespace OpenglUtils
 
 		// VBO for vertex data
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, 3 * numVerts * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER,  numVerts * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 		glVertexAttribPointer((GLuint)RT3D_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(RT3D_VERTEX);
 		pMeshBuffers[RT3D_VERTEX] = VBO;
@@ -254,7 +254,7 @@ namespace OpenglUtils
 		if (colours != nullptr) {
 			glGenBuffers(1, &VBO);
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, 3 * numVerts * sizeof(GLfloat), colours, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(GLfloat), colours, GL_STATIC_DRAW);
 			glVertexAttribPointer((GLuint)RT3D_COLOUR, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(RT3D_COLOUR);
 			pMeshBuffers[RT3D_COLOUR] = VBO;
@@ -264,7 +264,7 @@ namespace OpenglUtils
 		if (normals != nullptr) {
 			glGenBuffers(1, &VBO);
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, 3 * numVerts * sizeof(GLfloat), normals, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(GLfloat), normals, GL_STATIC_DRAW);
 			glVertexAttribPointer((GLuint)RT3D_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(RT3D_NORMAL);
 			pMeshBuffers[RT3D_NORMAL] = VBO;
@@ -274,7 +274,7 @@ namespace OpenglUtils
 		if (texcoords != nullptr) {
 			glGenBuffers(1, &VBO);
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, 2 * numVerts * sizeof(GLfloat), texcoords, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(GLfloat), texcoords, GL_STATIC_DRAW);
 			glVertexAttribPointer((GLuint)RT3D_TEXCOORD, 2, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(RT3D_TEXCOORD);
 			pMeshBuffers[RT3D_TEXCOORD] = VBO;

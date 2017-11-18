@@ -25,6 +25,9 @@
     <Filter Include="Header Files\Utilities">
       <UniqueIdentifier>{b35e5da8-4f7f-4469-a51b-563369dd4b9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{e1d46a45-10fa-43e0-807e-7b8e83a62fc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -60,6 +63,9 @@
     <ClInclude Include="SDLGLTextureLoader.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -91,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="SDLGLTextureLoader.cpp">
       <Filter>Header Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Header Files\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

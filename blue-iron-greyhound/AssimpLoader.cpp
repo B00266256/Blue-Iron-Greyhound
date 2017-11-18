@@ -32,15 +32,21 @@ namespace AssimpLoader
 			return;
 		}
 
-		const aiMesh* mesh = scene->mMeshes[0];
-
+	
+		const aiMesh* mesh;
 		//if (mesh == NULL)
 		//	return;
 
 
-		int numOfFaces = mesh->mNumFaces;
-		int numOfIndices = numOfFaces * 3;
-		
+		//int numOfFaces = mesh->mNumFaces;
+		//int numOfIndices = numOfFaces * 3;
+//		
+for (unsigned int j = 0; j < scene->mNumMeshes; j++)
+{
+	mesh = scene->mMeshes[j];
+	int numOfFaces = mesh->mNumFaces;
+	int numOfIndices = numOfFaces * 3;
+
 
 		for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
 			const aiFace &face = mesh->mFaces[i];
@@ -70,8 +76,19 @@ namespace AssimpLoader
 				texCoords.push_back(mesh->mTextureCoords[0][i].x);
 				texCoords.push_back(mesh->mTextureCoords[0][i].y);
 			}
+			//
+			if (mesh->HasVertexColors(j)) {
+				colours.push_back(mesh->mColors[j][i].r);
+				colours.push_back(mesh->mColors[j][i].g);
+				colours.push_back(mesh->mColors[j][i].b);
+			//
 		}
-	}
+		}
+
+}
+//
+
+}
 	
 
 

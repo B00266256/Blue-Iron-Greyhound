@@ -13,6 +13,7 @@ commentcomment chloe
 //#include "InteractiveTestComponent.h"
 #include "OpenglRenderer.h"
 #include "GameObject.h"
+#include "CameraComponent.h"
 
 //Temp includes for testing during development
 #include "SDL.h"
@@ -42,36 +43,61 @@ int main(int argc, char *argv[])
 	testObj->update();
 	*/
 
-
+	//camera set up
+	Camera *cameraComponent = new Camera(glm::vec3(-2.0f, 1.0f, 8.0f), glm::vec3(0.0f, 1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0);
+	cameraComponent->init();
+	
+	//render set up
 	RenderingSystem* renderer = new openglRenderer();
+	renderer->camera = cameraComponent;
 
-	//First Object
-	GameObject *firstObject = new GameObject("Collada Cube");
 
-	MeshComponent* meshComponent = new MeshComponent("First Mesh");
+	//First Object - Acting as player
+	GameObject *firstObject = new GameObject("Collada");
+	firstObject->setTranslation(glm::vec3(-5.0f, 1.0f, 0.0f));
+	firstObject->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
+	firstObject->setCameraRotation(0.0);
+	firstObject->setRenderRotate(glm::vec3(1, 1, 1));
+
+	MeshComponent* meshComponent = new MeshComponent("sphere");
 	meshComponent->setRenderer(renderer);
-	meshComponent->loadObject("cube_with_2UVs.DAE");
+	meshComponent->loadObject("sphere_triangulate.dae");
 	meshComponent->loadTexture("scifiFloor.bmp");
 	meshComponent->loadMesh();
-	meshComponent->setTranslation(glm::vec3(-5.0f, 1.f, -5.0f));
-	//meshComponent->setScaling(glm::vec3(0.05, 0.05, 0.05));
-	meshComponent->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	firstObject->addComponent(meshComponent);
 	
-	//Second Object
-	GameObject *secondObject = new GameObject("Collada Cube");
+	firstObject->addComponent(meshComponent);
+	firstObject->addComponent(cameraComponent);
+	
 
-	MeshComponent* secondMesh = new MeshComponent("First Mesh");
+	//Ground Plane
+	GameObject *secondObject = new GameObject("Collada");
+	secondObject->setTranslation(glm::vec3(-1.0f, -1.1f, -25.0f));
+	secondObject->setScaling(glm::vec3(20.0f, 1.0f, 20.0f));
+	secondObject->setRenderRotate(glm::vec3(1, 1, 1));
+
+	MeshComponent* secondMesh = new MeshComponent("cube");
 	secondMesh->setRenderer(renderer);
 	secondMesh->loadObject("cube_with_2UVs.DAE");
 	secondMesh->loadTexture("scifi.bmp");
 	secondMesh->loadMesh();
-	secondMesh->setTranslation(glm::vec3(-10.0f, -1.1f, -10.0f));
-	//meshComponent->setScaling(glm::vec3(0.05, 0.05, 0.05));
-	secondMesh->setScaling(glm::vec3(20.0f, 1.0f, 20.0f));
-
+	
 	secondObject->addComponent(secondMesh);
+
+
+	//Duck Object
+	GameObject *duck = new GameObject("Collada");
+	duck->setTranslation(glm::vec3(-10.0f, 0.1f, 0.0f));
+	duck->setScaling(glm::vec3(0.02f, 0.02f, 0.02f));
+	duck->setRenderRotate(glm::vec3(1, 1, 1));
+
+	MeshComponent* duckMesh = new MeshComponent("Duck");
+	duckMesh->setRenderer(renderer);
+	duckMesh->loadObject("duck_triangulate.DAE");
+	duckMesh->loadTexture("scifiFloor.bmp");
+	duckMesh->loadMesh();
+	
+	duck->addComponent(duckMesh);
+	
 
 
 
@@ -90,12 +116,13 @@ int main(int argc, char *argv[])
 
 		renderer->clearScreen();
 
+		//
+		firstObject->input();
+		//
+
 		firstObject->update();
 		secondObject->update();
-
-		renderer->update(); //temp keyboard input
-
-		
+		duck->update();
 
 		renderer->swapBuffers();
 		

@@ -1,5 +1,6 @@
 #include "MeshComponent.h"
 #include "OpenglRenderer.h"
+#include "GameObject.h"
 
 MeshComponent::MeshComponent(std::string name)
 {
@@ -13,6 +14,10 @@ void MeshComponent::init()
 void MeshComponent::update()
 {
 	renderer->draw(this);
+
+	scaling = getUser()->getScaling();
+	translation = getUser()->getTranslation();
+	rotate = getUser()->getRenderRotate();
 }
 
 void MeshComponent::loadMesh()
@@ -46,6 +51,10 @@ void MeshComponent::setMeshParameters(vector<float> verts, vector<float> norms, 
 	this->vertCount = verts.size();
 }
 
+
+
+
+
 void MeshComponent::setTranslation(glm::vec3 tran)
 {
 	translation = tran;
@@ -62,6 +71,11 @@ glm::vec3 MeshComponent::getTranslation()
 	return translation;
 }
 
+glm::vec3 MeshComponent::getRotate()
+{
+	return rotate;
+
+}
 glm::vec3 MeshComponent::getScaling()
 {
 	return scaling;

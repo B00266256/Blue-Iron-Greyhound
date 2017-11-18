@@ -1,5 +1,11 @@
 #include "GameObject.h"
 
+//temp input
+#include "SDL.h"
+
+#define DEG_TO_RADIAN 0.017453293
+//
+
 //std::vector<GameObject*> GameObject::gameObjects;
 
 GameObject::GameObject(std::string name)
@@ -21,11 +27,46 @@ void GameObject::init()
 	}
 }
 
+
+
+
+
+//TEMPORARY INPUT
+//////////
+
+glm::vec3 moveForward(glm::vec3 pos, float angle, float d) {
+	float angles = angle;
+	return glm::vec3(pos.x + d*std::sin(angle*DEG_TO_RADIAN), pos.y, pos.z - d*std::cos(angle*DEG_TO_RADIAN));
+}
+
+glm::vec3 moveRight(glm::vec3 pos, float angle, float d) {
+	return glm::vec3(pos.x + d*std::cos(angle*DEG_TO_RADIAN), pos.y, pos.z + d*std::sin(angle*DEG_TO_RADIAN));
+}
+
+
+
+void GameObject::input()
+{
+	//Temporary controls to help with render debugging
+	const Uint8 *keys = SDL_GetKeyboardState(NULL);
+	if (keys[SDL_SCANCODE_W]) position = moveForward(position, cameraRotate, 0.01f);
+	if (keys[SDL_SCANCODE_S]) position = moveForward(position, cameraRotate, -0.01f);
+	if (keys[SDL_SCANCODE_A]) position = moveRight(position, cameraRotate, -0.01f);
+	if (keys[SDL_SCANCODE_D]) position = moveRight(position, cameraRotate, 0.01f);
+	if (keys[SDL_SCANCODE_R]) position.y += 0.01;
+	if (keys[SDL_SCANCODE_F]) position.y -= 0.01;
+
+	if (keys[SDL_SCANCODE_COMMA]) cameraRotate -= 0.1f;
+	if (keys[SDL_SCANCODE_PERIOD]) cameraRotate += 0.1f;
+}
+//////////
+
 void GameObject::update()
 {
 	for (int i = 0; i < componentList.size(); i++) {
 		componentList[i]->update();
 	}
+
 }
 
 void GameObject::addComponent(Component * component)

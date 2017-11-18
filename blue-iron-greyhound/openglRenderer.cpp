@@ -11,6 +11,7 @@ openglRenderer::openglRenderer()
 	init();
 }
 
+//Initialises camera values, view values, shaders and Enables some GL features needed (like DepthTest).
 void openglRenderer::init()
 {
 	glEnable(GL_CULL_FACE);
@@ -21,53 +22,61 @@ void openglRenderer::init()
 	glm::mat4 modelview(1.0);
 	mvStack.push(modelview);
 
-	eye = glm::vec3(-2.0f, 1.0f, 8.0f);
-	at = glm::vec3(0.0f, 1.0f, -1.0f);
-	up = glm::vec3(0.0f, 1.0f, 0.0f);
-	r = 0.0f;
-	
-	at = moveForward(eye, r, 1.0f);
-	mvStack.top() = glm::lookAt(eye, at, up);
-	/*
-	No compilation.
-	Very odd runtime error happening when compiling shaders, needs fixed before any rendering can happen.
-	*/
+	//eye = camera->getEye();
+	//r = camera->getRotation();
+	//at = camera->getAt();
 
+	eye = glm::vec3(-2.0f, 1.0f, 8.0f);
+	r = 0.0f;
+	at = glm::vec3(0, 1.0, -1.0);
+	up = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	mvStack.top() = glm::lookAt(eye, at, up);
+	
 	shaderProgram = OpenglUtils::initShaders("minimal.vert", "minimal.frag");
 }
 
-
+//Camera Updates
 void openglRenderer::update()
 {
-	
-	//Temporary controls to help with render debugging
-	const Uint8 *keys = SDL_GetKeyboardState(NULL);
-	if (keys[SDL_SCANCODE_W]) eye = moveForward(eye, r, 0.01f);
-	if (keys[SDL_SCANCODE_S]) eye = moveForward(eye, r, -0.01f);
-	if (keys[SDL_SCANCODE_A]) eye = moveRight(eye, r, -0.01f);
-	if (keys[SDL_SCANCODE_D]) eye = moveRight(eye, r, 0.01f);
-	if (keys[SDL_SCANCODE_R]) eye.y += 0.01;
-	if (keys[SDL_SCANCODE_F]) eye.y -= 0.01;
+	eye = camera->getEye();
+	r = camera->getRotation();
+	at = camera->getAt();
 
-	if (keys[SDL_SCANCODE_COMMA]) r -= 0.1f;
-	if (keys[SDL_SCANCODE_PERIOD]) r += 0.1f;
-
-	at = moveForward(eye, r, 1.0f);
 	mvStack.top() = glm::lookAt(eye, at, up);
 }
 
 
-//this function is temporarily in here to help test rendering
-glm::vec3 openglRenderer::moveForward(glm::vec3 pos, GLfloat angle, GLfloat d)
+
+
+void openglRenderer::draw(MeshComponent* mesh)
 {
-	return glm::vec3(pos.x + d*std::sin(r*DEG_TO_RADIAN), pos.y, pos.z - d*std::cos(r*DEG_TO_RADIAN));
+	update();
+
+	
+	//Draw code
+	glUseProgram(shaderProgram);
+	OpenglUtils::setUniformMatrix4fv(shaderProgram, "projection", glm::value_ptr(projection));
+
+	glBindTexture(GL_TEXTURE_2D, mesh->getTextureID());
+	mvStack.push(mvStack.top());
+	
+	
+	mvStack.top() = glm::translate(mvStack.top(), mesh->getTranslation());
+	mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
+
+	//mvStack.top() = glm::rotate(mvStack.top(), float(r*DEG_TO_RADIAN), eye);									//Need to introduce rotations, mainly for the player object to rotate with camera
+
+	OpenglUtils::setUniformMatrix4fv(shaderProgram, "modelview", glm::value_ptr(mvStack.top()));
+	//OpenglUtils::setMaterial(shaderProgram, mesh->getMaterial);												//Not using materials yet
+	OpenglUtils::drawIndexedMesh(mesh->getMeshID(), mesh->getMeshIndexCount(), GL_TRIANGLES);
+	mvStack.pop();
+
 }
 
 
-glm::vec3 openglRenderer::moveRight(glm::vec3 pos, GLfloat angle, GLfloat d) {
-	return glm::vec3(pos.x + d*std::cos(r*DEG_TO_RADIAN), pos.y, pos.z + d*std::sin(r*DEG_TO_RADIAN));
-}
 
+//Turns mesh data into a VBO
 void openglRenderer::loadMesh(MeshComponent* mesh)
 {
 	GLuint meshObject = OpenglUtils::createMesh((GLuint)mesh->getNumVerts(), (GLfloat*)mesh->getVerts(), (GLfloat*)mesh->getColours(), (GLfloat*)mesh->getNorms(), (GLfloat*)mesh->getTexCoords(), (GLuint)mesh->getMeshIndexCount(), (GLuint*)mesh->getIndices());
@@ -76,11 +85,13 @@ void openglRenderer::loadMesh(MeshComponent* mesh)
 	mesh->setMesh(meshObject);
 }
 
+//Generates a texture ID for a given filename
 void openglRenderer::loadTexture(MeshComponent* mesh, char * filename)
 {
 	mesh->setTexture(SDLGLTextureLoader::loadBitmap(filename));
 }
 
+//Uses assimp to all the object data we need for creating a mesh VBO
 void openglRenderer::loadObject(MeshComponent* mesh, const char * filename)
 {
 	//Temporary containers for object data
@@ -96,44 +107,17 @@ void openglRenderer::loadObject(MeshComponent* mesh, const char * filename)
 	//Pass temporary containers into mesh to set the meshes values
 	mesh->setMeshParameters(verts, norms, texCoords, indices, colours);
 
-	
-
 	//test values being produced by asssimp
 	cout << "Number of Verts: " << mesh->getNumVerts() << endl;
 
 	if (verts.empty())
-	{
 		cout << "ERROR: mesh vertices not loaded" << endl;
-	}
 	else
-	{
 		cout << "Mesh vertices  loaded" << endl;
-	}
 }
 
 
-void openglRenderer::draw(MeshComponent* mesh)
-{
-
-
-	
-	//Draw code
-	glUseProgram(shaderProgram);
-	OpenglUtils::setUniformMatrix4fv(shaderProgram, "projection", glm::value_ptr(projection));
-
-	glBindTexture(GL_TEXTURE_2D, mesh->getTextureID());
-	mvStack.push(mvStack.top());
-	mvStack.top() = glm::translate(mvStack.top(), mesh->getTranslation());
-	mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
-	OpenglUtils::setUniformMatrix4fv(shaderProgram, "modelview", glm::value_ptr(mvStack.top()));
-	//OpenglUtils::setMaterial(shaderProgram, mesh->getMaterial);
-	OpenglUtils::drawIndexedMesh(mesh->getMeshID(), mesh->getMeshIndexCount(), GL_TRIANGLES);
-	mvStack.pop();
-
-	
-
-}
-
+//Defines the context and initialises GLEW
 void openglRenderer::setupRenderContext()
 {
 		
@@ -159,6 +143,7 @@ void openglRenderer::setupRenderContext()
 
 }
 
+//initialises SDL and creates a window with openGL context
 void openglRenderer::createWindow()
 {
 	
@@ -185,7 +170,7 @@ void openglRenderer::createWindow()
 
 openglRenderer::~openglRenderer()
 {
-	delete this;
+	
 }
 
 

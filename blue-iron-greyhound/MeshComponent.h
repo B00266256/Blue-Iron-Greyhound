@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef MESHCOMPONENT
 #define MESHCOMPONENT
 
@@ -26,6 +24,7 @@ public:
 	//Gets
 	glm::vec3 getTranslation();
 	glm::vec3 getScaling();
+	glm::vec3 getRotate();
 	int getMeshID();
 
 	int getNumVerts();
@@ -47,9 +46,12 @@ public:
 
 	RenderingSystem *renderer;
 private:
+	//transformation data for renderer
 	glm::vec3 translation;
 	glm::vec3 scaling;
+	glm::vec3 rotate;
 	
+
 	//3D object data
 	std::vector<float> verts;
 	std::vector<float> norms;
