@@ -8,7 +8,7 @@ MeshComponent::MeshComponent(std::string name)
 
 void MeshComponent::init()
 {
-	
+
 }
 
 void MeshComponent::update()
@@ -48,6 +48,7 @@ void MeshComponent::setMeshParameters(vector<float> verts, vector<float> norms, 
 	this->indices = indices;
 	this->colours = colours;
 	this->meshIndexCount = indices.size();
+	this->texCoordCount = texCoords.size();
 	this->vertCount = verts.size();
 }
 
@@ -65,6 +66,10 @@ void MeshComponent::setScaling(glm::vec3 scale)
 	scaling = scale;
 }
 
+int MeshComponent::getTexcoordCount()
+{
+	return texCoordCount;
+}
 
 glm::vec3 MeshComponent::getTranslation()
 {

@@ -18,9 +18,9 @@ public:
 	void update();
 
 	void loadMesh();
-	void loadTexture( char * filename);
+	void loadTexture(char * filename);
 	void loadObject(const char * filename);
-	
+
 	//Gets
 	glm::vec3 getTranslation();
 	glm::vec3 getScaling();
@@ -34,6 +34,7 @@ public:
 	int* getIndices();
 	float* getColours();
 	int getMeshIndexCount();
+	int getTexcoordCount();
 	int getTextureID();
 
 	//Sets
@@ -50,7 +51,7 @@ private:
 	glm::vec3 translation;
 	glm::vec3 scaling;
 	glm::vec3 rotate;
-	
+
 
 	//3D object data
 	std::vector<float> verts;
@@ -60,11 +61,12 @@ private:
 	std::vector<float> colours;
 	int vertCount;
 	int meshIndexCount;
-	
+	int texCoordCount;
+
 	int meshID;
 	int textureID;
 	//int material...
-	
-	
+
+
 };
 #endif

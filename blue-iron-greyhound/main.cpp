@@ -1,6 +1,6 @@
 /*=============================================================================
 * Project: Blue Iron Greyhound
-* 
+*
 
 commentcomment chloe
 =============================================================================*/
@@ -27,8 +27,8 @@ class RenderingSystem;
 int main(int argc, char *argv[])
 {
 
-	
-	
+
+
 
 	/*GameObject *testObj = new GameObject("testObj");
 	TestComponent *testComponentA = new TestComponent("testComponentA");
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
 	testObj->addComponent(testComponentA);
 	testObj->addComponent(testComponentB);
-	
+
 	testObj->init();
 	testObj->update();
 	testObj->getComponent<InteractiveTestComponent>()->update();
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 	//camera set up
 	Camera *cameraComponent = new Camera(glm::vec3(-2.0f, 1.0f, 8.0f), glm::vec3(0.0f, 1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0);
 	cameraComponent->init();
-	
+
 	//render set up
 	RenderingSystem* renderer = new openglRenderer();
 	renderer->camera = cameraComponent;
@@ -64,10 +64,10 @@ int main(int argc, char *argv[])
 	meshComponent->loadObject("sphere_triangulate.dae");
 	meshComponent->loadTexture("scifiFloor.bmp");
 	meshComponent->loadMesh();
-	
+
 	firstObject->addComponent(meshComponent);
 	firstObject->addComponent(cameraComponent);
-	
+
 
 	//Ground Plane
 	GameObject *secondObject = new GameObject("Collada");
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 	secondMesh->loadObject("cube_with_2UVs.DAE");
 	secondMesh->loadTexture("scifi.bmp");
 	secondMesh->loadMesh();
-	
+
 	secondObject->addComponent(secondMesh);
 
 
@@ -95,19 +95,17 @@ int main(int argc, char *argv[])
 	duckMesh->loadObject("duck_triangulate.DAE");
 	duckMesh->loadTexture("scifiFloor.bmp");
 	duckMesh->loadMesh();
-	
-	duck->addComponent(duckMesh);
-	
 
+	duck->addComponent(duckMesh);
 
 
 	bool running = true;
-	
+
 	SDL_Event sdlEvent;
-	do 
+	do
 	{
 		while (SDL_PollEvent(&sdlEvent)) //This poll event should not be here since it couples the main to SDL. 
-		{				
+		{
 			if (sdlEvent.type == SDL_QUIT)
 			{
 				running = false;
@@ -125,8 +123,8 @@ int main(int argc, char *argv[])
 		duck->update();
 
 		renderer->swapBuffers();
-		
-		
+
+
 	} while (running);
 
 	delete meshComponent;

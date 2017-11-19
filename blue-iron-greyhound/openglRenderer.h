@@ -23,7 +23,7 @@
 
 class openglRenderer : public RenderingSystem
 {
-public: 
+public:
 	openglRenderer();
 	~openglRenderer();
 
@@ -31,15 +31,20 @@ public:
 	void update();
 	void draw(MeshComponent* mesh);
 	void loadMesh(MeshComponent* mesh);
-	void loadTexture(MeshComponent* mesh,  char * filename);
+	void loadTexture(MeshComponent* mesh, char * filename);
 	void loadObject(MeshComponent* mesh, const char * filename);
 
-	void createWindow();					
-	void setupRenderContext();				
+	void createWindow();
+	void setupRenderContext();
 
 	void destroyWindow();
 	void swapBuffers();
 	void clearScreen();
+
+	void setSceneLights();
+
+	//for testing
+	void lightControl();
 
 private:
 	SDL_Window* window;												//Window Handle
