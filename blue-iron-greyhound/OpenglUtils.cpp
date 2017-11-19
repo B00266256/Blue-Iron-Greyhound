@@ -49,17 +49,31 @@ char * texVert =
 "																	\n"
 "in  vec3 in_Position;												\n"
 "//in  vec3 in_Colour; // colour not used with lighting				\n"
-"//in  vec3 in_Normal;												\n"
+"in  vec3 in_Normal;												\n"
 "//out vec4 ex_Color;												\n"
+"out vec3 ex_N;														\n"
+"out vec3 ex_V;														\n"
+"out vec3 ex_L;														\n"		
+"out float ex_D;													\n"
+"uniform vec4 lightPosition;										\n"
 "																	\n"
 "in vec2 in_TexCoord;												\n"
 "out vec2 ex_TexCoord;												\n"
 "																	\n"
-"// multiply each vertex position by the MVP matrix					\n"
-"void main(void) {													\n"
+"	void main(void) {												\n"
 "																	\n"
 "	// vertex into eye coordinates									\n"
 "	vec4 vertexPosition = modelview * vec4(in_Position,1.0);		\n"
+"    ex_D = distance(vertexPosition, lightPosition);				\n"
+"																	\n"
+"	ex_V = normalize(-vertexPosition).xyz;							\n"
+"																	\n"
+"	mat3 normalmatrix = transpose(inverse(mat3(modelview)));		\n"
+"	ex_N = normalize(normalmatrix * in_Normal);						\n"
+"	//ex_N = in_Normal;						\n"
+"																	\n"
+"	ex_L = normalize(lightPosition.xyz - vertexPosition.xyz);		\n"
+"																	\n"				
 "	gl_Position = projection * vertexPosition;						\n"
 "																	\n"
 "	ex_TexCoord = in_TexCoord;										\n"
@@ -76,6 +90,33 @@ char * texFrag =
 "	// Some drivers require the following					\n"
 "	precision highp float;									\n"
 "															\n"
+"in vec3 ex_N;												\n"
+"in vec3 ex_V;												\n"
+"in vec3 ex_L;												\n"
+"in float ex_D;												\n"
+"															\n"
+"uniform float attConst;									\n"
+"uniform float attLinear;									\n"
+"uniform float attQuadratic;								\n"
+"															\n"
+"struct lightStruct											\n"
+"{															\n"
+"	vec4 ambient;											\n"
+"	vec4 diffuse;											\n"
+"	vec4 specular;											\n"
+"};															\n"
+"															\n"
+"struct materialStruct										\n"
+"{															\n"
+"	vec4 ambient;											\n"
+"	vec4 diffuse;											\n"
+"	vec4 specular;											\n"
+"	float shininess;										\n"
+"};															\n"
+"															\n"
+"															\n"
+"uniform lightStruct light;									\n"
+"uniform materialStruct material;							\n"
 "uniform sampler2D textureUnit0;							\n"
 "															\n"
 "in vec2 ex_TexCoord;										\n"
@@ -83,9 +124,32 @@ char * texFrag =
 "															\n"
 "void main(void) {											\n"
 "															\n"
-"	// Fragment colour										\n"
-"	out_Color = texture(textureUnit0, ex_TexCoord);			\n"
-"}															\n"
+"																					\n"
+"	// Ambient intensity															\n"
+"	vec4 ambientI = light.ambient * material.ambient;								\n"
+"																					\n"
+"	// Diffuse intensity															\n"
+"	vec4 diffuseI = light.diffuse * material.diffuse;								\n"
+"	diffuseI = diffuseI * max(dot(normalize(ex_N),normalize(ex_L)),0);				\n"
+"																					\n"
+"	// Specular intensity															\n"
+"	// Calculate R - reflection of light											\n"
+"	vec3 R = normalize(reflect(normalize(-ex_L),normalize(ex_N)));					\n"
+"																					\n"
+"	vec4 specularI = light.specular * material.specular;							\n"
+"	specularI = specularI * pow(max(dot(R,ex_V),0), material.shininess);			\n"
+"																							\n"
+"	float attenuation = 1.0f / (attConst + attLinear * ex_D + attQuadratic * ex_D*ex_D);	\n"
+"	vec4 tmp_Color = (diffuseI + specularI)*texture(textureUnit0, ex_TexCoord);				\n"
+"	//Attenuation does not affect transparency												\n"
+"	vec4 litColour = vec4(tmp_Color.rgb *attenuation, tmp_Color.a);							\n"
+"	vec4 amb = min(ambientI,vec4(1.0f));													\n"
+"																							\n"
+"	//out_Color = (diffuseI + specularI) + ambientI*texture(textureUnit0, ex_TexCoord),vec4(1.0f); \n"
+"	// Fragment colour																		\n"
+"	//out_Color =e x_N * texture(textureUnit0, ex_TexCoord),vec4(1.0f);					\n"
+"	out_Color= (diffuseI + specularI)+ambientI*texture(textureUnit0, ex_TexCoord);	\n"
+"}																							\n"
 };
 
 
@@ -170,7 +234,7 @@ namespace OpenglUtils
 		GLint vlen;
 		GLint flen;
 
-		//vs = loadFile(vertShader, vlen);
+		//vs = loadFile(vertFile, vlen);
 		//fs = loadFile(fragFile, flen);
 
 		vs = texVert;
@@ -223,7 +287,7 @@ namespace OpenglUtils
 
 
 	GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours, const GLfloat* normals,
-		const GLfloat* texcoords, const GLuint indexCount, const GLuint* indices)
+		const GLfloat* texcoords, const GLuint texCount, const GLuint indexCount, const GLuint* indices)
 	{
 		GLuint VAO;
 		// generate and set up a VAO for the mesh
@@ -241,6 +305,8 @@ namespace OpenglUtils
 		// generate and set up the VBOs for the data
 		GLuint VBO;
 		glGenBuffers(1, &VBO);
+
+	
 
 		// VBO for vertex data
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -274,7 +340,7 @@ namespace OpenglUtils
 		if (texcoords != nullptr) {
 			glGenBuffers(1, &VBO);
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(GLfloat), texcoords, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, texCount * sizeof(GLfloat), texcoords, GL_STATIC_DRAW);
 			glVertexAttribPointer((GLuint)RT3D_TEXCOORD, 2, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(RT3D_TEXCOORD);
 			pMeshBuffers[RT3D_TEXCOORD] = VBO;

@@ -39,14 +39,10 @@ namespace SDLGLTextureLoader {
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		SDL_FreeSurface(tmpSurface); // texture loaded, free the temporary buffer
-		if (texID != NULL)
-		{
-			std::cout << "Texture " << fname << " loaded" << std::endl;
-		}
-		else
-		{
+
+		if (texID == NULL)
 			std::cout << "ERROR: Texture " << fname << " not loaded" << std::endl;
-		}
+	
 		return texID;	// return value of texture ID
 	}
 

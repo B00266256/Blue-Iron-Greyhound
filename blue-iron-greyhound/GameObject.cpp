@@ -22,7 +22,7 @@ GameObject::~GameObject()
 
 void GameObject::init()
 {
-	for (int i = 0; i < componentList.size(); i++) {
+	for (unsigned int i = 0; i < componentList.size(); i++) {
 		componentList[i]->init();
 	}
 }
@@ -63,7 +63,7 @@ void GameObject::input()
 
 void GameObject::update()
 {
-	for (int i = 0; i < componentList.size(); i++) {
+	for (unsigned int i = 0; i < componentList.size(); i++) {
 		componentList[i]->update();
 	}
 
@@ -100,7 +100,7 @@ void GameObject::destroy()
 	}
 	*/
 	//Clear Components
-	for (int i = 0; i < componentList.size(); i++) {
+	for (unsigned int i = 0; i < componentList.size(); i++) {
 
 		if (componentList[i] != nullptr) {
 			componentList[i]->destroy();

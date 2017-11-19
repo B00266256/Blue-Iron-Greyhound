@@ -9,17 +9,17 @@
 class Camera : public Component
 {
 public:
-	Camera(){}
+	Camera() {}
 	Camera(glm::vec3 eye, glm::vec3 at, glm::vec3 up, float r);
 	~Camera() {};
 
-	 void init();
-	 void update();
+	void init();
+	void update();
 
-	 glm::vec3 getEye();
-	 glm::vec3 getAt();
-	 glm::vec3 getUp();
-	 float getRotation();
+	glm::vec3 getEye();
+	glm::vec3 getAt();
+	glm::vec3 getUp();
+	float getRotation();
 
 private:
 

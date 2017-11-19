@@ -22,7 +22,7 @@ void Camera::update()
 {
 	this->eye = getUser()->getTranslation();
 	this->eye += offset;
-	
+
 	this->rotation = getUser()->getCameraRotation();
 
 	this->at = glm::vec3(eye.x + 1.0f*std::sin(rotation*DEG_TO_RADIAN), eye.y, eye.z - 1.0f*std::cos(rotation*DEG_TO_RADIAN));

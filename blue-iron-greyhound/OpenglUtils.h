@@ -34,7 +34,7 @@ namespace OpenglUtils
 	GLuint initShaders(const char *vertFile, const char *fragFile);
 
 	GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours, const GLfloat* normals,
-		const GLfloat* texcoords, const GLuint indexCount, const GLuint* indices);
+		const GLfloat* texcoords,const GLuint texCount, const GLuint indexCount, const GLuint* indices);
 
 	void setUniformMatrix4fv(const GLuint program, const char* uniformName, const GLfloat *data);
 
