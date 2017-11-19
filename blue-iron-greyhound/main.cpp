@@ -54,10 +54,10 @@ int main(int argc, char *argv[])
 
 	//First Object - Acting as player
 	GameObject *firstObject = new GameObject("Collada");
-	firstObject->setTranslation(glm::vec3(-5.0f, 1.0f, 0.0f));
+	firstObject->setTranslation(glm::vec3(-5.0f, 5.0f, 0.0f));
 	firstObject->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
 	firstObject->setCameraRotation(0.0);
-	firstObject->setRenderRotate(glm::vec3(1, 1, 1));
+	firstObject->setRenderRotate(glm::vec3(NULL, NULL, NULL));
 
 	MeshComponent* meshComponent = new MeshComponent("sphere");
 	meshComponent->setRenderer(renderer);
@@ -71,14 +71,14 @@ int main(int argc, char *argv[])
 
 	//Ground Plane
 	GameObject *secondObject = new GameObject("Collada");
-	secondObject->setTranslation(glm::vec3(-1.0f, -1.1f, -25.0f));
-	secondObject->setScaling(glm::vec3(20.0f, 1.0f, 20.0f));
-	secondObject->setRenderRotate(glm::vec3(1, 1, 1));
+	secondObject->setTranslation(glm::vec3(0.0f, 0.0f, -50.0f));
+	secondObject->setScaling(glm::vec3(120, 1.0f, 120));
+	secondObject->setRenderRotate(glm::vec3(NULL, NULL, NULL));
 
 	MeshComponent* secondMesh = new MeshComponent("cube");
 	secondMesh->setRenderer(renderer);
 	secondMesh->loadObject("cube_with_2UVs.DAE");
-	secondMesh->loadTexture("scifi.bmp");
+	secondMesh->loadTexture("sand.bmp");
 	secondMesh->loadMesh();
 
 	secondObject->addComponent(secondMesh);
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	GameObject *duck = new GameObject("Collada");
 	duck->setTranslation(glm::vec3(-10.0f, 0.1f, 0.0f));
 	duck->setScaling(glm::vec3(0.02f, 0.02f, 0.02f));
-	duck->setRenderRotate(glm::vec3(1, 1, 1));
+	duck->setRenderRotate(glm::vec3(NULL, NULL, NULL));
 
 	MeshComponent* duckMesh = new MeshComponent("Duck");
 	duckMesh->setRenderer(renderer);
@@ -97,6 +97,41 @@ int main(int argc, char *argv[])
 	duckMesh->loadMesh();
 
 	duck->addComponent(duckMesh);
+
+
+
+	//building Object
+	GameObject *buildingObject = new GameObject("old building");
+	buildingObject->setTranslation(glm::vec3(0.0f, 0.0f, 0.0f));
+	buildingObject->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
+	buildingObject->setRenderRotate(glm::vec3(-1.0f, 0.0f, 0.0f));
+
+	MeshComponent* buildingMesh = new MeshComponent("test");
+	buildingMesh->setRenderer(renderer);
+	buildingMesh->loadObject("building.dae");
+	buildingMesh->loadTexture("scifiFloor.bmp");
+	buildingMesh->loadMesh();
+
+	buildingObject->addComponent(buildingMesh);
+
+	//test Object
+	GameObject *testObject = new GameObject("test");
+	testObject->setTranslation(glm::vec3(0.0f, 0.0f, 0.0f));
+	testObject->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
+	testObject->setRenderRotate(glm::vec3(NULL, NULL, NULL));
+
+	MeshComponent* testMesh = new MeshComponent("test");
+	testMesh->setRenderer(renderer);
+	testMesh->loadObject("habitat.obj");
+	testMesh->loadTexture("scifi.bmp");
+	testMesh->loadMesh();
+
+	testObject->addComponent(testMesh);
+
+
+
+
+
 
 
 	bool running = true;
@@ -121,6 +156,10 @@ int main(int argc, char *argv[])
 		firstObject->update();
 		secondObject->update();
 		duck->update();
+
+		testObject->update();
+
+	
 
 		renderer->swapBuffers();
 

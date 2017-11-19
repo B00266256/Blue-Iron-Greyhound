@@ -49,15 +49,15 @@ void GameObject::input()
 {
 	//Temporary controls to help with render debugging
 	const Uint8 *keys = SDL_GetKeyboardState(NULL);
-	if (keys[SDL_SCANCODE_W]) position = moveForward(position, cameraRotate, 0.01f);
-	if (keys[SDL_SCANCODE_S]) position = moveForward(position, cameraRotate, -0.01f);
-	if (keys[SDL_SCANCODE_A]) position = moveRight(position, cameraRotate, -0.01f);
-	if (keys[SDL_SCANCODE_D]) position = moveRight(position, cameraRotate, 0.01f);
-	if (keys[SDL_SCANCODE_R]) position.y += 0.01;
-	if (keys[SDL_SCANCODE_F]) position.y -= 0.01;
+	if (keys[SDL_SCANCODE_W]) position = moveForward(position, cameraRotate, 1);
+	if (keys[SDL_SCANCODE_S]) position = moveForward(position, cameraRotate, -1);
+	if (keys[SDL_SCANCODE_A]) position = moveRight(position, cameraRotate, -1);
+	if (keys[SDL_SCANCODE_D]) position = moveRight(position, cameraRotate, 1);
+	if (keys[SDL_SCANCODE_R]) position.y += 1;
+	if (keys[SDL_SCANCODE_F]) position.y -= 1;
 
-	if (keys[SDL_SCANCODE_COMMA]) cameraRotate -= 0.1f;
-	if (keys[SDL_SCANCODE_PERIOD]) cameraRotate += 0.1f;
+	if (keys[SDL_SCANCODE_COMMA]) cameraRotate -= 1;
+	if (keys[SDL_SCANCODE_PERIOD]) cameraRotate += 1;
 }
 //////////
 

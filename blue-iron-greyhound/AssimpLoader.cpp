@@ -18,12 +18,12 @@ namespace AssimpLoader
 		//loads our file into a scene object so its all accessible.
 		const aiScene* scene = importer.ReadFile(file,
 			aiProcess_CalcTangentSpace |
-			aiProcess_Triangulate |
-			aiProcess_JoinIdenticalVertices |
+			aiProcess_Triangulate 
+			|
 			aiProcess_SortByPType);
 
 
-
+		//  | aiProcess_JoinIdenticalVertices
 
 		if (!scene)
 		{
@@ -34,7 +34,7 @@ namespace AssimpLoader
 
 
 		const aiMesh* mesh;
-
+		cout << "Number of meshes: " << scene->mNumMeshes << endl;
 
 		for (unsigned int j = 0; j < scene->mNumMeshes; j++)
 		{
@@ -48,6 +48,7 @@ namespace AssimpLoader
 				indices.push_back(face.mIndices[0]);
 				indices.push_back(face.mIndices[1]);
 				indices.push_back(face.mIndices[2]);
+			
 
 			}
 
@@ -69,12 +70,12 @@ namespace AssimpLoader
 				}
 
 				if (mesh->HasTextureCoords(0)) {
-					texCoords.push_back(mesh->mTextureCoords[j][i].x);
-					texCoords.push_back(mesh->mTextureCoords[j][i].y);
+					texCoords.push_back(mesh->mTextureCoords[0][i].x);
+					texCoords.push_back(mesh->mTextureCoords[0][i].y);
 
 				}
 
-				if (mesh->HasVertexColors(j)) {
+				if (mesh->HasVertexColors(0)) {
 					colours.push_back(mesh->mColors[j][i].r);
 					colours.push_back(mesh->mColors[j][i].g);
 					colours.push_back(mesh->mColors[j][i].b);

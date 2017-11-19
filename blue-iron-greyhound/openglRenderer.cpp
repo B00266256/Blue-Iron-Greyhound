@@ -4,7 +4,7 @@
 
 OpenglUtils::lightStruct globalLight =
 {
-	{ 0.6f, 0.6f, 0.6f, 0.6f },		// ambient
+	{ 0.8f, 0.8f, 0.8f, 0.8f },		// ambient
 	{ 0.5f, 0.5f, 0.5f, 0.5f },		// diffuse
 	{ 0.04, 0.04, 0.04, 0.04f },	// specular
 	{ 0.0f, 5.0f, 0.0f, 0.0f }		// position
@@ -57,7 +57,7 @@ void openglRenderer::init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_SMOOTH);
 
-	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 800.0f / 600.0f, 1.0f, 150.0f);
+	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 800.0f / 600.0f, 0.5f, 2000.0f);
 
 	glm::mat4 modelview(1.0);
 	mvStack.push(modelview);
@@ -139,7 +139,9 @@ void openglRenderer::draw(MeshComponent* mesh)
 
 	mvStack.top() = glm::translate(mvStack.top(), mesh->getTranslation());
 	mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
-	//mvStack.top() = glm::rotate(mvStack.top(), float(r*DEG_TO_RADIAN), eye);									//Need to introduce rotations, mainly for the player object to rotate with camera
+
+	if(mesh->getRotate() != glm::vec3(NULL, NULL, NULL))
+	mvStack.top() = glm::rotate(mvStack.top(), float(90*DEG_TO_RADIAN), mesh->getRotate());									//Need to introduce rotations, mainly for the player object to rotate with camera
 
 	OpenglUtils::setUniformMatrix4fv(shaderProgram, "modelview", glm::value_ptr(mvStack.top()));
 	//OpenglUtils::setMaterial(shaderProgram, mesh->getMaterial);												//Not using materials yet
@@ -259,7 +261,7 @@ void openglRenderer::swapBuffers()
 void openglRenderer::clearScreen()
 {
 
-	glClearColor(1, 1, 0, 1);					//Sets glClearColour and uses GlClear to clear screen and depth buffer
+	glClearColor(0, 0, 0, 1);					//Sets glClearColour and uses GlClear to clear screen and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
