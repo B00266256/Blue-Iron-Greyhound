@@ -10,7 +10,7 @@ using namespace std;
 
 namespace AssimpLoader
 {
-	void loadObjectData(const std::string& file, std::vector<float> &verts, std::vector<float> &norms, std::vector<float> &texCoords, std::vector<int> &indices, std::vector<float> &colours);
+	void loadObjectData(const std::string& file, vector<int>& meshIDs, vector<int> &indexCount);
 	
 }
 

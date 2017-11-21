@@ -5,8 +5,8 @@
 OpenglUtils::lightStruct globalLight =
 {
 	{ 0.8f, 0.8f, 0.8f, 0.8f },		// ambient
-	{ 0.5f, 0.5f, 0.5f, 0.5f },		// diffuse
-	{ 0.04, 0.04, 0.04, 0.04f },	// specular
+	{ 0.8f, 0.8f, 0.8f, 0.8f },		// diffuse
+	{ 0.0f, 0.0f, 0.0f, 0.04f },	// specular
 	{ 0.0f, 5.0f, 0.0f, 0.0f }		// position
 };
 
@@ -57,7 +57,7 @@ void openglRenderer::init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_SMOOTH);
 
-	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 800.0f / 600.0f, 0.5f, 2000.0f);
+	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 1200.0f / 600.0f, 0.5f, 2000.0f);
 
 	glm::mat4 modelview(1.0);
 	mvStack.push(modelview);
@@ -128,64 +128,61 @@ void openglRenderer::update()
 void openglRenderer::draw(MeshComponent* mesh)
 {
 	update();
+	
+	vector<int> meshes = mesh->getMeshes();
+	vector<int> indexCounts = mesh->getIndexCounts();
+	vector<int> textures = mesh->getTextures();
+
+	for (int i = 0; i < meshes.size(); i++)
+	{
 
 
-	//Draw code
-	glUseProgram(shaderProgram);
-	OpenglUtils::setUniformMatrix4fv(shaderProgram, "projection", glm::value_ptr(projection));
 
-	glBindTexture(GL_TEXTURE_2D, mesh->getTextureID());
-	mvStack.push(mvStack.top());
+		//Draw code
+		glUseProgram(shaderProgram);
+		OpenglUtils::setUniformMatrix4fv(shaderProgram, "projection", glm::value_ptr(projection));
 
-	mvStack.top() = glm::translate(mvStack.top(), mesh->getTranslation());
-	mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
+		glBindTexture(GL_TEXTURE_2D, textures[i]);
+		mvStack.push(mvStack.top());
 
-	if(mesh->getRotate() != glm::vec3(NULL, NULL, NULL))
-	mvStack.top() = glm::rotate(mvStack.top(), float(90*DEG_TO_RADIAN), mesh->getRotate());									//Need to introduce rotations, mainly for the player object to rotate with camera
+		mvStack.top() = glm::translate(mvStack.top(), mesh->getTranslation());
+		mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
 
-	OpenglUtils::setUniformMatrix4fv(shaderProgram, "modelview", glm::value_ptr(mvStack.top()));
-	//OpenglUtils::setMaterial(shaderProgram, mesh->getMaterial);												//Not using materials yet
-	OpenglUtils::drawIndexedMesh(mesh->getMeshID(), mesh->getMeshIndexCount(), GL_TRIANGLES);
-	mvStack.pop();
+		if (mesh->getRotate() != glm::vec3(NULL, NULL, NULL))
+			mvStack.top() = glm::rotate(mvStack.top(), float(90 * DEG_TO_RADIAN), mesh->getRotate());									//Need to introduce rotations, mainly for the player object to rotate with camera
+
+		OpenglUtils::setUniformMatrix4fv(shaderProgram, "modelview", glm::value_ptr(mvStack.top()));
+		//OpenglUtils::setMaterial(shaderProgram, mesh->getMaterial);												//Not using materials yet
+		OpenglUtils::drawIndexedMesh(meshes[i], indexCounts[i], GL_TRIANGLES);
+		mvStack.pop();
+
+
+	}
 
 }
 
 
 
-//Turns mesh data into a VBO
-void openglRenderer::loadMesh(MeshComponent* mesh)
-{
-	GLuint meshObject = OpenglUtils::createMesh((GLuint)mesh->getNumVerts(), (GLfloat*)mesh->getVerts(), (GLfloat*)mesh->getColours(), (GLfloat*)mesh->getNorms(), (GLfloat*)mesh->getTexCoords(), (GLuint)mesh->getTexcoordCount(), (GLuint)mesh->getMeshIndexCount(), (GLuint*)mesh->getIndices());
 
-
-	mesh->setMesh(meshObject);
-}
 
 //Generates a texture ID for a given filename
 void openglRenderer::loadTexture(MeshComponent* mesh, char * filename)
 {
-	mesh->setTexture(SDLGLTextureLoader::loadBitmap(filename));
+	mesh->addTexture(SDLGLTextureLoader::loadBitmap(filename));
 }
 
 //Uses assimp to all the object data we need for creating a mesh VBO
 void openglRenderer::loadObject(MeshComponent* mesh, const char * filename)
 {
-	//Temporary containers for object data
-	std::vector<float> verts;
-	std::vector<float> norms;
-	std::vector<float> texCoords;
-	std::vector<int>   indices;
-	std::vector<float> colours;
 
+	vector<int> meshIDs;
+	vector<int> indexCounts;
+	
 	//Load objects into temporary containers
-	AssimpLoader::loadObjectData(filename, verts, norms, texCoords, indices, colours);
+	AssimpLoader::loadObjectData(filename, meshIDs, indexCounts);
 
-	//Pass temporary containers into mesh to set the meshes values
-	mesh->setMeshParameters(verts, norms, texCoords, indices, colours);
-
-	//test values being produced by asssimp
-	if (verts.empty())
-		cout << "ERROR: mesh vertices not loaded" << endl;
+	mesh->setMeshes(meshIDs);
+	mesh->setIndexCounts(indexCounts);
 
 }
 
@@ -226,7 +223,7 @@ void openglRenderer::createWindow()
 	{
 
 		window = SDL_CreateWindow("iron rifts", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,	//createWindow(window title, pos on screen, pos on screan, width, height..)
-			800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+			1200, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
 		glContext = SDL_GL_CreateContext(window);
 		SDL_GL_MakeCurrent(window, glContext);

@@ -147,8 +147,8 @@ char * texFrag =
 "																							\n"
 "	//out_Color = (diffuseI + specularI) + ambientI*texture(textureUnit0, ex_TexCoord),vec4(1.0f); \n"
 "	// Fragment colour																		\n"
-"	//out_Color= (diffuseI + specularI)+ambientI*texture(textureUnit0, ex_TexCoord);			\n"
-"	out_Color = texture(textureUnit0, ex_TexCoord);;					\n"
+"	out_Color= (diffuseI + specularI)+ambientI*texture(textureUnit0, ex_TexCoord);			\n"
+"	//out_Color = texture(textureUnit0, ex_TexCoord);;					\n"
 "}																							\n"
 };
 

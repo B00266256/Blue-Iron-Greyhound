@@ -17,7 +17,7 @@ public:
 	void init();
 	void update();
 
-	void loadMesh();
+	
 	void loadTexture(char * filename);
 	void loadObject(const char * filename);
 
@@ -27,23 +27,25 @@ public:
 	glm::vec3 getRotate();
 	int getMeshID();
 
-	int getNumVerts();
-	float* getVerts();
-	float* getNorms();
-	float* getTexCoords();
-	int* getIndices();
-	float* getColours();
 	int getMeshIndexCount();
 	int getTexcoordCount();
 	int getTextureID();
 
 	//Sets
 	void setMesh(int ID) { meshID = ID; }
-	void setTexture(int ID) { textureID = ID; }
+	void addTexture(int ID) { textures.push_back(ID); }
 	void setRenderer(RenderingSystem* rendersystem);
-	void setMeshParameters(vector<float> verts, vector<float> norms, vector<float> texCoords, vector<int> indices, vector<float> colours);
 	void setTranslation(glm::vec3 tran);
 	void setScaling(glm::vec3 scale);
+
+	void setMeshes(vector<int> meshIDs);
+	vector<int> getMeshes();
+
+	vector<int> getTextures();
+
+
+	void setIndexCounts(vector<int> indexCounts);
+	vector<int> getIndexCounts();
 
 	RenderingSystem *renderer;
 private:
@@ -53,12 +55,11 @@ private:
 	glm::vec3 rotate;
 
 
-	//3D object data
-	std::vector<float> verts;
-	std::vector<float> norms;
-	std::vector<float> texCoords;
-	std::vector<int> indices;
-	std::vector<float> colours;
+	vector<int> meshIDs;
+	vector<int> indexCounts;
+	vector<int> textures;
+
+
 	int vertCount;
 	int meshIndexCount;
 	int texCoordCount;

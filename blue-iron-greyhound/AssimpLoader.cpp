@@ -1,16 +1,16 @@
 #include "AssimpLoader.h"
 using namespace std;
 #include <iostream>
+#include "OpenglUtils.h"
 
 
 namespace AssimpLoader
 {
 
 	//Extracts all the data we need and puts into into our parameters
-	void loadObjectData(const std::string& file, std::vector<float> &verts, std::vector<float> &norms, std::vector<float> &texCoords, std::vector<int> &indices, std::vector<float> &colours)
+	void loadObjectData(const std::string& file, vector<int>& meshIDs, vector<int>& indexCount)
 	{
-		//const aiScene *scene = importFile(file);
-
+	
 		// Create an instance of the Importer class for loading the object data
 		Assimp::Importer importer;
 
@@ -18,23 +18,35 @@ namespace AssimpLoader
 		//loads our file into a scene object so its all accessible.
 		const aiScene* scene = importer.ReadFile(file,
 			aiProcess_CalcTangentSpace |
-			aiProcess_Triangulate 
-			|
+			aiProcess_Triangulate |
+			aiProcess_FlipUVs |
 			aiProcess_SortByPType);
 
-
-		//  | aiProcess_JoinIdenticalVertices
+			//  | aiProcess_JoinIdenticalVertices
 
 		if (!scene)
 		{
 			std::cout << "ERROR: Assimp file load failed." << std::endl;
 			const char * 	GetErrorString();
-			return;
+		
 		}
 
 
 		const aiMesh* mesh;
 		cout << "Number of meshes: " << scene->mNumMeshes << endl;
+
+
+		//Temporary containers for object data
+		std::vector<float> verts;
+		std::vector<float> norms;
+		std::vector<float> texCoords;
+		std::vector<int>   indices;
+		std::vector<float> colours;
+
+		//will store the mesh ID of each scene mesh after they have been individually sent to openglUtils.
+		//vector<int> meshIDs;
+		
+		int texCount = 0;
 
 		for (unsigned int j = 0; j < scene->mNumMeshes; j++)
 		{
@@ -47,8 +59,7 @@ namespace AssimpLoader
 				const aiFace &face = mesh->mFaces[i];
 				indices.push_back(face.mIndices[0]);
 				indices.push_back(face.mIndices[1]);
-				indices.push_back(face.mIndices[2]);
-			
+				indices.push_back(face.mIndices[2]);		
 
 			}
 
@@ -73,6 +84,8 @@ namespace AssimpLoader
 					texCoords.push_back(mesh->mTextureCoords[0][i].x);
 					texCoords.push_back(mesh->mTextureCoords[0][i].y);
 
+					texCount += 2;
+
 				}
 
 				if (mesh->HasVertexColors(0)) {
@@ -83,8 +96,15 @@ namespace AssimpLoader
 				}
 			}
 
-		}
+			cout << texCount << endl;
+			int ID = OpenglUtils::createMesh((GLuint)verts.size(), (GLfloat*)verts.data(), (GLfloat*)colours.data(), (GLfloat*)norms.data(), (GLfloat*)texCoords.data(), (GLuint)texCoords.size(), (GLuint)indices.size(), (GLuint*)indices.data());
+			meshIDs.push_back(ID);
+			indexCount.push_back(indices.size());
 
+			colours.clear(); norms.clear(); texCoords.clear(); verts.clear(); indices.clear();
+
+		}
+	
 	}
 
 

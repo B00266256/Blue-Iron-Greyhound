@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 
 	//First Object - Acting as player
 	GameObject *firstObject = new GameObject("Collada");
-	firstObject->setTranslation(glm::vec3(-5.0f, 5.0f, 0.0f));
+	firstObject->setTranslation(glm::vec3(-5.0f, 0.0f, 0.0f));
 	firstObject->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
 	firstObject->setCameraRotation(0.0);
 	firstObject->setRenderRotate(glm::vec3(NULL, NULL, NULL));
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	meshComponent->setRenderer(renderer);
 	meshComponent->loadObject("sphere_triangulate.dae");
 	meshComponent->loadTexture("scifiFloor.bmp");
-	meshComponent->loadMesh();
+	
 
 	firstObject->addComponent(meshComponent);
 	firstObject->addComponent(cameraComponent);
@@ -77,9 +77,9 @@ int main(int argc, char *argv[])
 
 	MeshComponent* secondMesh = new MeshComponent("cube");
 	secondMesh->setRenderer(renderer);
-	secondMesh->loadObject("cube_with_2UVs.DAE");
+	//secondMesh->loadObject("cube_with_2UVs.DAE");
 	secondMesh->loadTexture("sand.bmp");
-	secondMesh->loadMesh();
+
 
 	secondObject->addComponent(secondMesh);
 
@@ -92,9 +92,9 @@ int main(int argc, char *argv[])
 
 	MeshComponent* duckMesh = new MeshComponent("Duck");
 	duckMesh->setRenderer(renderer);
-	duckMesh->loadObject("duck_triangulate.DAE");
+	//duckMesh->loadObject("duck_triangulate.DAE");
 	duckMesh->loadTexture("scifiFloor.bmp");
-	duckMesh->loadMesh();
+	
 
 	duck->addComponent(duckMesh);
 
@@ -108,23 +108,64 @@ int main(int argc, char *argv[])
 
 	MeshComponent* buildingMesh = new MeshComponent("test");
 	buildingMesh->setRenderer(renderer);
-	buildingMesh->loadObject("building.dae");
+	//buildingMesh->loadObject("building.dae");
 	buildingMesh->loadTexture("scifiFloor.bmp");
-	buildingMesh->loadMesh();
+	
 
 	buildingObject->addComponent(buildingMesh);
 
 	//test Object
 	GameObject *testObject = new GameObject("test");
-	testObject->setTranslation(glm::vec3(0.0f, 0.0f, 0.0f));
+	testObject->setTranslation(glm::vec3(0.0f, -100.0f, 0.0f));
 	testObject->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
 	testObject->setRenderRotate(glm::vec3(NULL, NULL, NULL));
 
 	MeshComponent* testMesh = new MeshComponent("test");
 	testMesh->setRenderer(renderer);
 	testMesh->loadObject("habitat.obj");
-	testMesh->loadTexture("scifi.bmp");
-	testMesh->loadMesh();
+
+	//benches	
+	testMesh->loadTexture("habitatWood.bmp");
+	//buildings
+	testMesh->loadTexture("habitatBuilding2.bmp");
+	//leaves
+	testMesh->loadTexture("habitatGrass.bmp");
+	//lamps bulbs
+	testMesh->loadTexture("habitatBlack.bmp");
+	//lamp posts
+	testMesh->loadTexture("habitatWeird.bmp");
+	//paths/bridge
+	testMesh->loadTexture("habitatBuilding.bmp");
+	//terrain
+	testMesh->loadTexture("habitatTerrain.bmp");
+	//trees
+	testMesh->loadTexture("habitatWood2.bmp");
+	//water
+	testMesh->loadTexture("habitatWater.bmp");
+	//windows
+	testMesh->loadTexture("habitatWindow.bmp");
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+
+	
+
+	
+	
+	
+	
+	
+
+	
 
 	testObject->addComponent(testMesh);
 

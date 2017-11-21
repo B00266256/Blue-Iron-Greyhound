@@ -20,10 +20,6 @@ void MeshComponent::update()
 	rotate = getUser()->getRenderRotate();
 }
 
-void MeshComponent::loadMesh()
-{
-	renderer->loadMesh(this);
-}
 
 void MeshComponent::loadTexture(char * filename)
 {
@@ -40,19 +36,31 @@ void MeshComponent::setRenderer(RenderingSystem* rendersystem)
 	renderer = rendersystem;
 }
 
-void MeshComponent::setMeshParameters(vector<float> verts, vector<float> norms, vector<float> texCoords, vector<int> indices, vector<float> colours)
+
+void MeshComponent::setMeshes(vector<int> meshIDs)
 {
-	this->verts = verts;
-	this->norms = norms;
-	this->texCoords = texCoords;
-	this->indices = indices;
-	this->colours = colours;
-	this->meshIndexCount = indices.size();
-	this->texCoordCount = texCoords.size();
-	this->vertCount = verts.size();
+	this->meshIDs = meshIDs;
 }
 
+vector<int> MeshComponent::getMeshes()
+{
+	return meshIDs;
+}
 
+vector<int> MeshComponent::getTextures()
+{
+	return textures;
+}
+
+void MeshComponent::setIndexCounts(vector<int> indexCounts)
+{
+	this->indexCounts = indexCounts;
+}
+
+vector<int> MeshComponent::getIndexCounts()
+{
+	return indexCounts;
+}
 
 
 
@@ -101,29 +109,6 @@ int MeshComponent::getTextureID()
 	return textureID;
 }
 
-int MeshComponent::getNumVerts()
-{
-	return vertCount;
-}
-float* MeshComponent::getVerts()
-{
-	return verts.data();
-}
-float* MeshComponent::getNorms()
-{
-	return norms.data();
-}
-float* MeshComponent::getTexCoords()
-{
-	return texCoords.data();
-}
-int* MeshComponent::getIndices()
-{
-	return indices.data();
-}
-float* MeshComponent::getColours()
-{
-	return colours.data();
-}
+
 
 
