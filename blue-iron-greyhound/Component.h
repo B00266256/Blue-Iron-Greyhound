@@ -1,3 +1,9 @@
+/*=============================================================================
+* Component.h
+* Author: Adam Stanton
+* Abstract parent to component classes... 
+=============================================================================*/
+
 #pragma once
 #include "Object.h"
 

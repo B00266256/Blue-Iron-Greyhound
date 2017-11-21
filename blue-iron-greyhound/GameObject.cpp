@@ -1,10 +1,12 @@
 #include "GameObject.h"
+#include <iostream>
 
 //std::vector<GameObject*> GameObject::gameObjects;
 
 GameObject::GameObject(std::string name)
 {
 	Object::name = name;
+	//create an ID here?
 	//GameObject::gameObjects.push_back(this);
 }
 
@@ -16,14 +18,16 @@ GameObject::~GameObject()
 
 void GameObject::init()
 {
-	for (int i = 0; i < componentList.size(); i++) {
+	for (int i = 0; i < componentList.size(); i++)
+	{
 		componentList[i]->init();
 	}
 }
 
 void GameObject::update()
 {
-	for (int i = 0; i < componentList.size(); i++) {
+	for (int i = 0; i < componentList.size(); i++)
+	{
 		componentList[i]->update();
 	}
 }
@@ -32,6 +36,16 @@ void GameObject::addComponent(Component * component)
 {
 	component->setUser(this);
 	GameObject::componentList.push_back(component);
+}
+
+void GameObject::setPosition(glm::vec3 iposition)
+{
+	this->position = iposition;
+}
+
+void GameObject::setRotation(float irotation)
+{
+	this->rotation = irotation;
 }
 
 void GameObject::destroy()

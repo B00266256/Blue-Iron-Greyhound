@@ -1,3 +1,9 @@
+/*=============================================================================
+* Object.h
+* Author: Adam Stanton
+* Abstract parent to our entire component/object architecture...
+=============================================================================*/
+
 #pragma once
 #include <string>
 
