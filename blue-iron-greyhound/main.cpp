@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 
 	buildingObject->addComponent(buildingMesh);
 
-	//test Object
+	//Large Habitat Scene
 	GameObject *testObject = new GameObject("test");
 	testObject->setTranslation(glm::vec3(0.0f, -100.0f, 0.0f));
 	testObject->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
