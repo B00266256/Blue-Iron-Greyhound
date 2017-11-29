@@ -2,13 +2,14 @@
 using namespace std;
 #include <iostream>
 #include "OpenglUtils.h"
+#include <glm/glm.hpp>
 
 
 namespace AssimpLoader
 {
 
 	//Extracts all the data we need and puts into into our parameters
-	void loadObjectData(const std::string& file, vector<int>& meshIDs, vector<int>& indexCount)
+	void loadObjectData(const std::string& file, vector<int>& meshIDs, vector<int>& indexCount, vector<glm::vec3>& maxmin)
 	{
 	
 		// Create an instance of the Importer class for loading the object data
@@ -20,9 +21,17 @@ namespace AssimpLoader
 			aiProcess_CalcTangentSpace |
 			aiProcess_Triangulate |
 			aiProcess_FlipUVs |
-			aiProcess_SortByPType);
+			aiProcess_SortByPType
+			//aiProcess_FixInfacingNormals  
+		//	| aiProcess_FindInvalidData
+			//| aiProcess_RemoveComponent
+			| aiProcess_GenSmoothNormals 
+			//| aiProcess_FindDegenerates
+			//| aiProcess_PreTransformVertices
+			|aiProcess_GenNormals
+		);
 
-			//  | aiProcess_JoinIdenticalVertices
+			//  | aiProcess_JoinIdenticalVertices		
 
 		if (!scene)
 		{
@@ -31,6 +40,11 @@ namespace AssimpLoader
 		
 		}
 
+		//these store the minimum and maxium vertices for object
+		glm::vec3 min(1000, 1000, 1000);
+		glm::vec3 max(-1000, -1000, -1000);
+
+		
 
 		const aiMesh* mesh;
 		cout << "Number of meshes: " << scene->mNumMeshes << endl;
@@ -71,6 +85,17 @@ namespace AssimpLoader
 					verts.push_back(mesh->mVertices[i].y);
 					verts.push_back(mesh->mVertices[i].z);
 
+					if (mesh->mVertices[i].x < min.x)   min.x = mesh->mVertices[i].x;
+					if (mesh->mVertices[i].y < min.y)   min.y = mesh->mVertices[i].y;
+					if (mesh->mVertices[i].z < min.z) 	min.z = mesh->mVertices[i].z;
+					
+								
+					if (mesh->mVertices[i].x > max.x) 	max.x = mesh->mVertices[i].x;
+					if (mesh->mVertices[i].y > max.y) 	max.y = mesh->mVertices[i].y;
+					if (mesh->mVertices[i].z > max.z)   max.z = mesh->mVertices[i].z;
+							
+					
+
 				}
 
 				if (mesh->HasNormals()) {
@@ -101,12 +126,23 @@ namespace AssimpLoader
 			meshIDs.push_back(ID);
 			indexCount.push_back(indices.size());
 
+			
+
 			colours.clear(); norms.clear(); texCoords.clear(); verts.clear(); indices.clear();
 
 		}
 	
+
+		//Pass out min and max
+		maxmin.push_back(min);
+		maxmin.push_back(max);
+		std::cout << min.x << " / " << min.y << " / " << min.z << std::endl;
+		std::cout << max.x << " / " << max.y << " / " << max.z << std::endl;
+
+
 	}
 
 
+	
 
 }

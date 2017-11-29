@@ -12,6 +12,8 @@ GameObject::GameObject(std::string name)
 {
 	Object::name = name;
 	//GameObject::gameObjects.push_back(this);
+	minimum = glm::vec3(0, 0, 0);
+	maximum = glm::vec3(0, 0, 0);
 }
 
 
@@ -28,12 +30,6 @@ void GameObject::init()
 }
 
 
-
-
-
-//TEMPORARY INPUT
-//////////
-
 glm::vec3 moveForward(glm::vec3 pos, float angle, float d) {
 	float angles = angle;
 	return glm::vec3(pos.x + d*std::sin(angle*DEG_TO_RADIAN), pos.y, pos.z - d*std::cos(angle*DEG_TO_RADIAN));
@@ -44,12 +40,42 @@ glm::vec3 moveRight(glm::vec3 pos, float angle, float d) {
 }
 
 
+
+
+//TEMPORARY INPUT
+void GameObject::input(double dt)
+{
+	const Uint8 *keys = SDL_GetKeyboardState(NULL);
+	if (keys[SDL_SCANCODE_W]) position = moveForward(position, cameraRotate, 30*dt);
+	if (keys[SDL_SCANCODE_S]) position = moveForward(position, cameraRotate, -30 *dt);
+	if (keys[SDL_SCANCODE_A]) position = moveRight(position, cameraRotate, -30 *dt);
+	if (keys[SDL_SCANCODE_D]) position = moveRight(position, cameraRotate, 30 *dt);
+	if (keys[SDL_SCANCODE_R]) position.y += 30 *dt;
+	if (keys[SDL_SCANCODE_F]) position.y -= 30 *dt;
+	if (keys[SDL_SCANCODE_COMMA]) cameraRotate -= 50 *dt;
+	if (keys[SDL_SCANCODE_PERIOD]) cameraRotate += 50 *dt;
+
+	//if (keys[SDL_SCANCODE_W]) 
+		//minimum = moveForward(minimum, cameraRotate, 0.1f);
+//	if (keys[SDL_SCANCODE_S]) 
+		//maximum = moveForward(maximum, cameraRotate, -0.1f);
+
+
+	//minimum = position + minimum;
+	//maximum = position + maximum;
+}
+//////////
+
 void GameObject::update()
 {
+
+	
+
 	for (unsigned int i = 0; i < componentList.size(); i++) {
 		componentList[i]->update();
 	}
 
+	
 }
 
 void GameObject::addComponent(Component * component)

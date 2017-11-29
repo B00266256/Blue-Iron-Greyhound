@@ -81,6 +81,9 @@
     <ClInclude Include="System.h">
       <Filter>Header Files\Movement</Filter>
     </ClInclude>
+    <ClInclude Include="Collisions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -121,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="SDLInputSystem.cpp">
       <Filter>Header Files\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="Collisions.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
