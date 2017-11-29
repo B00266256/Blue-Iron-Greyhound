@@ -70,14 +70,31 @@ void Collisions::draw()
 }
 
 
+bool Collisions::AABBtoAABB(glm::vec3 min1, glm::vec3 max1, glm::vec3 min2, glm::vec3 max2)
+{
+	// Collision tests. if any tests are false then theres no intersection.
+	if (max1.x < min2.x || min1.x > max2.x)
+		return false;
+	if (max1.y < min2.y || min1.y > max2.y)
+		return false;
+	if (max1.z < min2.z || min1.z > max2.z)
+		return false;
+	else
+		return true;
+	
+}
 
-void Collisions::AABBtoAABB()
+void Collisions::collisionSearch()
 {
 	
-	glm::vec3 min1;
-	glm::vec3 max1;
-	glm::vec3 min2;
-	glm::vec3 max2;
+	glm::vec3 dynamicMinimum;
+	glm::vec3 dynamicMaximum;
+	glm::vec3 staticMinimum;
+	glm::vec3 staticMaximum;
+
+	glm::vec3 translationVector;
+
+	
 
 
 /*
@@ -98,39 +115,39 @@ void Collisions::AABBtoAABB()
 
 
 
+
 	//for every dynamic object check against all static objects for intersection. If true update the dynamic object.
 	for (int i = 0; i < dynamicObjects.size(); i++)
 	{
+		//Grab dynamic objects position (Player). We'll need to use it a few times.
+		glm::vec3 currentPosition = dynamicObjects[0]->getPosition();
 
-		//Pull out the stored min and max out for testing and apply position (dynamic objects positions change)
-		min1 = dynMins[i] + dynamicObjects[i]->getPosition();
-		max1 = dynMaxs[i] + dynamicObjects[i]->getPosition();
-	
+		//Pull out the stored min and max out for testing and apply position (dynamic objects positions change).
+		dynamicMinimum = dynMins[i] + currentPosition;
+		dynamicMaximum = dynMaxs[i] + currentPosition;
+
 		for (int j = 0; j < staticObjects.size(); j++)
 		{
 			//Pull out the stored min and max out for testing
-			min2 = staticMins[j];
-			max2 = staticMaxs[j];
+			staticMinimum = staticMins[j];
+			staticMaximum = staticMaxs[j];
 
-			bool collision = true;
-
-			// Collision tests. if any tests are false then theres no intersection.
-			if (max1.x < min2.x || min1.x > max2.x)
-				collision = false;
-			if (max1.y < min2.y || min1.y > max2.y)
-				collision = false;
-			if (max1.z < min2.z || min1.z > max2.z)
-				collision = false;
-		
 			//Make a collision reaction if there is an intersection
-			if (collision)
+			if (AABBtoAABB(dynamicMinimum, dynamicMaximum, staticMinimum, staticMaximum))
 			{
-				dynamicObjects[i]->setTranslation(dynamicObjects[i]->getTranslation() + glm::vec3(0.2, 0, 0));
-				std::cout << "collision";
+
+				//uses the last frames position to hint the direction that the player is moving. 
+				//Very small value because it was only last frame so we multiply it a bit. Should really use dt for this
+				translationVector = (currentPosition - prevPosition) * glm::vec3(-4);
+
+				//dynamicObjects[i]->setTranslation(currentPosition + glm::vec3(0.2, 0, 0));
+				dynamicObjects[i]->setTranslation(currentPosition + translationVector);
 			}
-			
-			
+	
 		}
+
+		//Store the current position for use as the previous position in the next frame...
+		prevPosition = currentPosition;
 	}
 
 	
@@ -141,6 +158,7 @@ void Collisions::addStaticObject(GameObject* object)
 {
 	staticObjects.push_back(object);
 
+	//Store the values we need so we aren't making multiple Get calls
 	staticMins.push_back((object->getMin() * object->getScaling()) + object->getPosition());
 	staticMaxs.push_back((object->getMax() * object->getScaling()) + object->getPosition());
 }
@@ -149,6 +167,8 @@ void Collisions::addDynamicObject(GameObject* object)
 {
 	dynamicObjects.push_back(object);
 
+
+	//Store the unchanging values we need but position will have to be fetched since our dynamic objects are moving
 	glm::vec3 scaling = object->getScaling();
 
 	dynMins.push_back((object->getMin() * scaling));

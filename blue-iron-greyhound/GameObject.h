@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Component.h"
 #include <glm/glm.hpp>
+#include <GL/glew.h>
 
 class GameObject : public Object
 {

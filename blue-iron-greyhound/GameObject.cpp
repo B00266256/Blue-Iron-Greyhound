@@ -40,10 +40,8 @@ glm::vec3 moveRight(glm::vec3 pos, float angle, float d) {
 }
 
 
-
-
 //TEMPORARY INPUT
-void GameObject::input(double dt)
+void GameObject::input(double dt) 
 {
 	const Uint8 *keys = SDL_GetKeyboardState(NULL);
 	if (keys[SDL_SCANCODE_W]) position = moveForward(position, cameraRotate, 30*dt);
@@ -55,27 +53,27 @@ void GameObject::input(double dt)
 	if (keys[SDL_SCANCODE_COMMA]) cameraRotate -= 50 *dt;
 	if (keys[SDL_SCANCODE_PERIOD]) cameraRotate += 50 *dt;
 
-	//if (keys[SDL_SCANCODE_W]) 
-		//minimum = moveForward(minimum, cameraRotate, 0.1f);
-//	if (keys[SDL_SCANCODE_S]) 
-		//maximum = moveForward(maximum, cameraRotate, -0.1f);
 
+	if (keys[SDL_SCANCODE_1]) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glDisable(GL_CULL_FACE);
+	}
 
-	//minimum = position + minimum;
-	//maximum = position + maximum;
+	if (keys[SDL_SCANCODE_2]) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glEnable(GL_CULL_FACE);
+	}
+	
 }
 //////////
 
 void GameObject::update()
 {
 
-	
-
 	for (unsigned int i = 0; i < componentList.size(); i++) {
 		componentList[i]->update();
 	}
 
-	
 }
 
 void GameObject::addComponent(Component * component)

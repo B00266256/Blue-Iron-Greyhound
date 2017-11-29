@@ -136,9 +136,6 @@ namespace AssimpLoader
 		//Pass out min and max
 		maxmin.push_back(min);
 		maxmin.push_back(max);
-		std::cout << min.x << " / " << min.y << " / " << min.z << std::endl;
-		std::cout << max.x << " / " << max.y << " / " << max.z << std::endl;
-
 
 	}
 
