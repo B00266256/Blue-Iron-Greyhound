@@ -29,7 +29,7 @@ void MovementComponent::update()
 		moveRight();
 	//Update the user's position by the movement vector...
 	//std::cout << moveVector.x << " ::: " << moveVector.y << " ::: " << moveVector.z << std::endl; //DEBUG LINE
-	std::cout << this->user->getPosition().x << "/" << this->user->getPosition().y << "/" << this->user->getPosition().z << std::endl; //DEBUG LINE
+	//std::cout << this->user->getPosition().x << "/" << this->user->getPosition().y << "/" << this->user->getPosition().z << std::endl; //DEBUG LINE
 	this->user->setPosition(this->user->getPosition() + moveVector);
 }
 

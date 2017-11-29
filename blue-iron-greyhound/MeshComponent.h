@@ -38,6 +38,8 @@ public:
 	void setTranslation(glm::vec3 tran);
 	void setScaling(glm::vec3 scale);
 
+	void setMinMax(vector<glm::vec3> minmax);
+
 	void setMeshes(vector<int> meshIDs);
 	vector<int> getMeshes();
 
@@ -68,6 +70,8 @@ private:
 	int textureID;
 	//int material...
 
+
+	
 
 };
 #endif

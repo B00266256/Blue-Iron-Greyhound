@@ -5,7 +5,7 @@
 OpenglUtils::lightStruct globalLight =
 {
 	{ 0.8f, 0.8f, 0.8f, 0.8f },		// ambient
-	{ 0.8f, 0.8f, 0.8f, 0.8f },		// diffuse
+	{ 0.5f, 0.5f, 0.5f, 0.5f },		// diffuse
 	{ 0.0f, 0.0f, 0.0f, 0.04f },	// specular
 	{ 0.0f, 5.0f, 0.0f, 0.0f }		// position
 };
@@ -26,24 +26,7 @@ float attLinear = 0.05f;
 float attQuadratic = 0.01f;
 
 
-void openglRenderer::setSceneLights()
-{
-	// set light attenuation shader uniforms
-	GLuint uniformIndex = glGetUniformLocation(shaderProgram, "attConst");
-	glUniform1f(uniformIndex, attConstant);
-	uniformIndex = glGetUniformLocation(shaderProgram, "attLinear");
-	glUniform1f(uniformIndex, attLinear);
-	uniformIndex = glGetUniformLocation(shaderProgram, "attQuadratic");
-	glUniform1f(uniformIndex, attQuadratic);
 
-	OpenglUtils::setLight(shaderProgram, globalLight);
-
-
-
-	OpenglUtils::setMaterial(shaderProgram, material1);
-
-
-}
 
 openglRenderer::openglRenderer()
 {
@@ -79,8 +62,6 @@ void openglRenderer::init()
 //for testing
 void openglRenderer::lightControl()
 {
-	//lights
-
 	//Temporary controls to help with render debugging
 	const Uint8 *keys = SDL_GetKeyboardState(NULL);
 	if (keys[SDL_SCANCODE_I]) lightPos.z -= 0.1;
@@ -111,16 +92,19 @@ void openglRenderer::lightControl()
 //Camera Updates
 void openglRenderer::update()
 {
-	//
+	
 	mvStack.top()*lightPos;
 	setSceneLights();
 
+	//input light control
 	lightControl();
-	//
+	
 
 	eye = camera->getEye();
-	r = camera->getRotation();
+	//r = camera->getRotation();
 	at = camera->getAt();
+
+
 
 	mvStack.top() = glm::lookAt(eye, at, up);
 }
@@ -140,9 +124,6 @@ void openglRenderer::draw(MeshComponent* mesh)
 
 	for (int i = 0; i < meshes.size(); i++)
 	{
-
-
-
 		//Draw code
 		glUseProgram(shaderProgram);
 		OpenglUtils::setUniformMatrix4fv(shaderProgram, "projection", glm::value_ptr(projection));
@@ -156,10 +137,12 @@ void openglRenderer::draw(MeshComponent* mesh)
 		mvStack.push(mvStack.top());
 
 		mvStack.top() = glm::translate(mvStack.top(), mesh->getTranslation());
-		mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
+		
 
 		if (mesh->getRotate() != glm::vec3(NULL, NULL, NULL))
-			mvStack.top() = glm::rotate(mvStack.top(), float(90 * DEG_TO_RADIAN), mesh->getRotate());									//Need to introduce rotations, mainly for the player object to rotate with camera
+			mvStack.top() = glm::rotate(mvStack.top(), float(90 * DEG_TO_RADIAN), mesh->getRotate());
+
+		mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
 
 		OpenglUtils::setUniformMatrix4fv(shaderProgram, "modelview", glm::value_ptr(mvStack.top()));
 		//OpenglUtils::setMaterial(shaderProgram, mesh->getMaterial);												//Not using materials yet
@@ -187,12 +170,31 @@ void openglRenderer::loadObject(MeshComponent* mesh, const char * filename)
 
 	vector<int> meshIDs;
 	vector<int> indexCounts;
+	vector<glm::vec3> minmax;
 	
 	//Load objects into temporary containers
-	AssimpLoader::loadObjectData(filename, meshIDs, indexCounts);
+	AssimpLoader::loadObjectData(filename, meshIDs, indexCounts, minmax);
 
 	mesh->setMeshes(meshIDs);
 	mesh->setIndexCounts(indexCounts);
+	mesh->setMinMax(minmax);
+
+}
+
+
+
+void openglRenderer::setSceneLights()
+{
+	// set light attenuation shader uniforms
+	GLuint uniformIndex = glGetUniformLocation(shaderProgram, "attConst");
+	glUniform1f(uniformIndex, attConstant);
+	uniformIndex = glGetUniformLocation(shaderProgram, "attLinear");
+	glUniform1f(uniformIndex, attLinear);
+	uniformIndex = glGetUniformLocation(shaderProgram, "attQuadratic");
+	glUniform1f(uniformIndex, attQuadratic);
+
+	OpenglUtils::setLight(shaderProgram, globalLight);
+	OpenglUtils::setMaterial(shaderProgram, material1);
 
 }
 
@@ -220,6 +222,7 @@ void openglRenderer::setupRenderContext()
 	cout << glGetString(GL_VERSION) << endl;											//Prints the openGL version in use
 
 }
+
 
 //initialises SDL and creates a window with openGL context
 void openglRenderer::createWindow()

@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Component.h"
 #include <glm/glm.hpp>
+#include <GL/glew.h>
 
 class GameObject : public Object
 {
@@ -41,6 +42,17 @@ public:
 	float getCameraRotation() { return cameraRotate; }
 	glm::vec3 getRenderRotate() { return meshRotate; }
 
+
+	void setMin(glm::vec3 min) { minimum = min; }
+	void setMax(glm::vec3 max) { maximum = max; }
+
+	glm::vec3 getMin() { return minimum; }
+	glm::vec3 getMax() { return maximum; }
+
+
+	//temp input
+	void input(double dt);
+
 protected:
 	std::vector<Component *> componentList;
 
@@ -48,15 +60,13 @@ private:
 	glm::vec3 position;
 	float rotation;
 
-
-
-
 	glm::vec3 scaling;
 	glm::vec3 meshRotate;			//for the rendering
 
 	float cameraRotate;				//for the camera
 
-
+	glm::vec3 minimum;	
+	glm::vec3 maximum;
 };
 
 

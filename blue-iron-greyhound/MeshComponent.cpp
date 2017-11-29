@@ -37,6 +37,13 @@ void MeshComponent::setRenderer(RenderingSystem* rendersystem)
 }
 
 
+void MeshComponent::setMinMax(vector<glm::vec3> minmax)
+{
+	getUser()->setMin(minmax[0]);
+	getUser()->setMax(minmax[1]);
+}
+
+
 void MeshComponent::setMeshes(vector<int> meshIDs)
 {
 	this->meshIDs = meshIDs;
