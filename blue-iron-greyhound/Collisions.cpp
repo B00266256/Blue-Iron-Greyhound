@@ -147,8 +147,9 @@ void Collisions::collisionSearch()
 					
 					isStaticAlive[j] = false;
 
-					translationVector = (currentPosition - staticObjects[j]->getPosition());
+					//translationVector = (currentPosition - staticObjects[j]->getPosition());
 
+					translationVector = (currentPosition - prevPosition);
 
 					//Randy Gaul
 					//x overlap
@@ -182,9 +183,9 @@ void Collisions::collisionSearch()
 					//Very small value because it was only last frame so we multiply it a bit. Should really use dt for this
 					///translationVector = (currentPosition - prevPosition) * glm::vec3(-4);
 
-					//dynamicObjects[i]->setTranslation(currentPosition + glm::vec3(0.2, 0, 0));
+					dynamicObjects[i]->setTranslation(currentPosition + translationVector * glm::vec3(-2));
 						 //if (x_overlap != 0 && y_overlap != 0 && z_overlap)
-						dynamicObjects[i]->setTranslation(currentPosition + glm::vec3(x_overlap, y_overlap, z_overlap));
+						//dynamicObjects[i]->setTranslation(currentPosition + glm::vec3(x_overlap, y_overlap, z_overlap));
 
 
 						 isStaticAlive[j] = true;
