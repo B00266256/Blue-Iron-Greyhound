@@ -1,10 +1,11 @@
-#pragma once
-
-#include "Component.h"
-
 #ifndef RenderingSystem_H
 #define RenderingSystem_H
-#pragma once
+
+#include "Component.h"
+class MeshComponent;
+class Camera;
+
+
 
 class RenderingSystem : public Component
 {
@@ -14,13 +15,22 @@ public:
 
 	virtual void init() = 0;
 	virtual void update() = 0;
-	virtual void draw() = 0;
 
-	
+	virtual void swapBuffers() = 0;
+	virtual void clearScreen() = 0;
 
+	virtual void draw(MeshComponent* mesh) = 0;
+	virtual void loadTexture(MeshComponent* meshComponent, char * fileName) = 0;
+	virtual void loadObject(MeshComponent* mesh, const char * filename) = 0;
+
+	Camera* camera;
 private:
 
-	
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	glm::vec3 lightPosition;
+
 
 };
 #endif

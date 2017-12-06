@@ -18,6 +18,6 @@ public:
 	string getName() { return name; }
 	int getInstanceID() { return instanceID; }
 protected:
-	 string name;
-	 int instanceID;
+	string name;
+	int instanceID;
 };
