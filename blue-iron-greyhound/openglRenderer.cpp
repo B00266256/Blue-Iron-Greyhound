@@ -140,7 +140,7 @@ void openglRenderer::draw(MeshComponent* mesh)
 		
 
 		if (mesh->getRotate() != glm::vec3(NULL, NULL, NULL))
-			mvStack.top() = glm::rotate(mvStack.top(), float(90 * DEG_TO_RADIAN), mesh->getRotate());
+			mvStack.top() = glm::rotate(mvStack.top(), float(mesh->getRenderRotateDeg() * DEG_TO_RADIAN), mesh->getRotate());
 
 		mvStack.top() = glm::scale(mvStack.top(), mesh->getScaling());
 

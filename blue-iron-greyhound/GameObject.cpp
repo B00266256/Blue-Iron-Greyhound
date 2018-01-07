@@ -54,6 +54,9 @@ void GameObject::input(double dt)
 	if (keys[SDL_SCANCODE_PERIOD]) cameraRotate += 50 *dt;
 
 
+	if (keys[SDL_SCANCODE_L]) meshRotateDeg += 2;
+
+
 	if (keys[SDL_SCANCODE_1]) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDisable(GL_CULL_FACE);

@@ -9,6 +9,9 @@
 #include <SDL.h>
 #include <string>
 #include <map>
+#include <iostream>
+
+using namespace std;
 
 typedef std::pair<std::string, unsigned int> keys;
 
@@ -20,7 +23,18 @@ public:
 
 	void init();
 	bool keyPressed(std::string);
+	bool mousePressLeft();
+	bool mousePressRight();
+	glm::vec2 getMousePosition();
+ 
+	//glm::vec2 getMouseOrigin();
+	
+
 	//Need a mouse function!!!!
 private:
+	glm::vec2 mousePos;
+
 	std::map<std::string, unsigned int> keyMap;
+	bool pressed;
+	//glm::vec2 mousePos;
 };

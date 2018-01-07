@@ -45,6 +45,10 @@ public:
 
 	vector<int> getTextures();
 
+	float getRenderRotateDeg() { return deg; }
+
+
+	
 
 	void setIndexCounts(vector<int> indexCounts);
 	vector<int> getIndexCounts();
@@ -55,6 +59,7 @@ private:
 	glm::vec3 translation;
 	glm::vec3 scaling;
 	glm::vec3 rotate;
+	float deg;
 
 
 	vector<int> meshIDs;

@@ -35,12 +35,14 @@ public:
 	void setCameraRotation(float rota) { cameraRotate = rota; }
 	void setTranslation(glm::vec3 pos) { position = pos; }
 	void setScaling(glm::vec3 scale) { scaling = scale; }
-	void setRenderRotate(glm::vec3 rot) { meshRotate = rot; }
+	void setRenderRotateVec(glm::vec3 rot) { meshRotate = rot; }
+	void setRenderRotateDeg(float deg) { meshRotateDeg = deg; }
 
 	glm::vec3 getTranslation() { return position; }
 	glm::vec3 getScaling() { return scaling; }
 	float getCameraRotation() { return cameraRotate; }
 	glm::vec3 getRenderRotate() { return meshRotate; }
+	float getRenderRotateDeg() { return meshRotateDeg; }
 
 
 	void setMin(glm::vec3 min) { minimum = min; }
@@ -62,7 +64,7 @@ private:
 
 	glm::vec3 scaling;
 	glm::vec3 meshRotate;			//for the rendering
-
+	float meshRotateDeg;
 	float cameraRotate;				//for the camera
 
 	glm::vec3 minimum;	

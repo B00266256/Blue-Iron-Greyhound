@@ -59,3 +59,71 @@ bool SDLInputSystem::keyPressed(std::string key)
 	}	
 	return false;
 }
+
+bool SDLInputSystem::mousePressLeft() {
+	int i = 1;
+	SDL_Event sdlEvent;
+	while (SDL_PollEvent(&sdlEvent))
+	{
+		if (sdlEvent.type == SDL_QUIT)	//If the user quits:
+			i = 0;			//End the loop.
+
+		if (sdlEvent.type == SDL_MOUSEMOTION && sdlEvent.button.button == SDL_BUTTON_LEFT)
+		{
+			cout << "Mouse Left " << endl;
+		}
+		return false;
+	}
+}
+
+bool SDLInputSystem::mousePressRight() {
+	int i = 1;
+	SDL_Event sdlEvent;
+	while (SDL_PollEvent(&sdlEvent))
+	{
+		if (sdlEvent.type == SDL_QUIT)	//If the user quits:
+			i = 0;			//End the loop.
+
+		if (sdlEvent.type == SDL_MOUSEMOTION && sdlEvent.button.button == SDL_BUTTON_RIGHT)
+		{
+			cout << "Mouse Right" << endl;
+		}
+		return false;
+	}
+}
+
+
+
+glm::vec2 SDLInputSystem::getMousePosition() {
+	//pressed = false;
+	
+
+	int i = 1;
+	SDL_Event sdlEvent;
+	//while (SDL_PollEvent(&sdlEvent))
+	//{
+	
+		//if (sdlEvent.type == SDL_QUIT)	//If the user quits:
+		//	i = 0;			//End the loop.
+
+		//if (sdlEvent.type == SDL_MOUSEMOTION)
+		//{
+		
+			//mousePos.x = sdlEvent.motion.x;
+			//mousePos.y = sdlEvent.motion.y;
+			
+			int x;
+			int y;
+
+			SDL_GetMouseState(&x, &y);
+
+			mousePos.x = x;
+			mousePos.y = y;
+
+			//cout << "PosX: " << mousePos.x << "," << "PosY: " << mousePos.y << endl;
+	   //}
+		
+	//}
+	return mousePos;
+}
+//glm::vec2 getMouseOrigin(){}
