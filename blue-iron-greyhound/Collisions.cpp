@@ -149,13 +149,13 @@ void Collisions::collisionSearch()
 
 					//translationVector = (currentPosition - staticObjects[j]->getPosition());
 
-<<<<<<< HEAD
+
 				//uses the last frames position to hint the direction that the player is moving. 
 				//Very small value because it was only last frame so we multiply it a bit. Should really use dt for this
 				translationVector = (currentPosition - prevPosition) * glm::vec3(-2.5);
-=======
+
 					translationVector = (currentPosition - prevPosition);
->>>>>>> refs/heads/master
+
 
 					//Randy Gaul
 					//x overlap
