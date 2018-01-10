@@ -36,4 +36,6 @@ private:
 
 	std::vector<glm::vec3> dynMins;
 	std::vector<glm::vec3> dynMaxs;
+
+	std::vector<bool> isStaticAlive;
 };

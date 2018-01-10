@@ -114,6 +114,8 @@ void Collisions::collisionSearch()
 */
 
 
+	float x_overlap;
+	float prev_x_overlap;
 
 
 	//for every dynamic object check against all static objects for intersection. If true update the dynamic object.
@@ -125,25 +127,78 @@ void Collisions::collisionSearch()
 		//Pull out the stored min and max out for testing and apply position (dynamic objects positions change).
 		dynamicMinimum = dynMins[i] + currentPosition;
 		dynamicMaximum = dynMaxs[i] + currentPosition;
+		float x_overlap = -1000;
+		float y_overlap = -1000;
+		float z_overlap = -1000;
+		float prev_x_overlap = 1000;
+		
 
 		for (int j = 0; j < staticObjects.size(); j++)
 		{
 			//Pull out the stored min and max out for testing
 			staticMinimum = staticMins[j];
 			staticMaximum = staticMaxs[j];
+			
+			if (isStaticAlive[j])
+			{		
+				//Make a collision reaction if there is an intersection
+				if (AABBtoAABB(dynamicMinimum, dynamicMaximum, staticMinimum, staticMaximum))
+				{
+					
+					isStaticAlive[j] = false;
 
-			//Make a collision reaction if there is an intersection
-			if (AABBtoAABB(dynamicMinimum, dynamicMaximum, staticMinimum, staticMaximum))
-			{
+					//translationVector = (currentPosition - staticObjects[j]->getPosition());
 
+<<<<<<< HEAD
 				//uses the last frames position to hint the direction that the player is moving. 
 				//Very small value because it was only last frame so we multiply it a bit. Should really use dt for this
 				translationVector = (currentPosition - prevPosition) * glm::vec3(-2.5);
+=======
+					translationVector = (currentPosition - prevPosition);
+>>>>>>> refs/heads/master
 
-				//dynamicObjects[i]->setTranslation(currentPosition + glm::vec3(0.2, 0, 0));
-				dynamicObjects[i]->setTranslation(currentPosition + translationVector);
+					//Randy Gaul
+					//x overlap
+					float extent1 = (dynamicMaximum.x - dynamicMinimum.x) / 2;
+
+					float extent2 = (staticMaximum.x - staticMinimum.x) / 2;
+
+					 x_overlap = extent1 + extent2 - glm::abs(translationVector.x);
+
+					//y_overlap
+					 extent1 = (dynamicMaximum.y - dynamicMinimum.y) / 2;
+
+					 extent2 = (staticMaximum.y - staticMinimum.y) / 2;
+
+					 y_overlap = extent1 + extent2 - glm::abs(translationVector.y);
+
+					//z overlap
+					 extent1 = (dynamicMaximum.z - dynamicMinimum.z) / 2;
+
+					 extent2 = (staticMaximum.z - staticMinimum.z) / 2;
+
+					 z_overlap = extent1 + extent2 - glm::abs(translationVector.z);
+
+
+				
+					isStaticAlive[j] = false;
+					
+
+
+					//uses the last frames position to hint the direction that the player is moving. 
+					//Very small value because it was only last frame so we multiply it a bit. Should really use dt for this
+					///translationVector = (currentPosition - prevPosition) * glm::vec3(-4);
+
+					dynamicObjects[i]->setTranslation(currentPosition + translationVector * glm::vec3(-2));
+						 //if (x_overlap != 0 && y_overlap != 0 && z_overlap)
+						//dynamicObjects[i]->setTranslation(currentPosition + glm::vec3(x_overlap, y_overlap, z_overlap));
+
+
+						 isStaticAlive[j] = true;
+
+					prev_x_overlap = x_overlap;
+				}
 			}
-	
 		}
 
 		//Store the current position for use as the previous position in the next frame...
@@ -161,6 +216,8 @@ void Collisions::addStaticObject(GameObject* object)
 	//Store the values we need so we aren't making multiple Get calls
 	staticMins.push_back((object->getMin() * object->getScaling()) + object->getPosition());
 	staticMaxs.push_back((object->getMax() * object->getScaling()) + object->getPosition());
+
+	isStaticAlive.push_back(true);
 }
 
 void Collisions::addDynamicObject(GameObject* object)
