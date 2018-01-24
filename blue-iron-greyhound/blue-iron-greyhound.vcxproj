@@ -123,13 +123,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="AssimpLoader.h" />
+    <ClInclude Include="boundingVolume.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="Collisions.h" />
+    <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="SDLGLTextureLoader.h" />
     <ClInclude Include="InteractiveTestComponent.h" />
     <ClInclude Include="MeshComponent.h" />
@@ -138,6 +142,7 @@
     <ClInclude Include="OpenglUtils.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="SDLInputSystem.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="TestComponent.h" />
   </ItemGroup>
@@ -145,6 +150,7 @@
     <ClCompile Include="AssimpLoader.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="Collisions.cpp" />
+    <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InteractiveTestComponent.cpp" />
@@ -153,6 +159,7 @@
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="openglRenderer.cpp" />
     <ClCompile Include="OpenglUtils.cpp" />
+    <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="SDLGLTextureLoader.cpp" />
     <ClCompile Include="SDLInputSystem.cpp" />
     <ClCompile Include="TestComponent.cpp" />

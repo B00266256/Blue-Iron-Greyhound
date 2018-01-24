@@ -235,7 +235,7 @@ void openglRenderer::createWindow()
 	else
 	{
 
-		window = SDL_CreateWindow("iron rifts", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,	//createWindow(window title, pos on screen, pos on screan, width, height..)
+		window = SDL_CreateWindow("Iron Rifts", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,	//createWindow(window title, pos on screen, pos on screan, width, height..)
 			1200, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
 		glContext = SDL_GL_CreateContext(window);

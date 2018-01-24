@@ -85,17 +85,15 @@ namespace AssimpLoader
 					verts.push_back(mesh->mVertices[i].y);
 					verts.push_back(mesh->mVertices[i].z);
 
+					//Stores the min and mex vertices
 					if (mesh->mVertices[i].x < min.x)   min.x = mesh->mVertices[i].x;
 					if (mesh->mVertices[i].y < min.y)   min.y = mesh->mVertices[i].y;
 					if (mesh->mVertices[i].z < min.z) 	min.z = mesh->mVertices[i].z;
 					
-								
 					if (mesh->mVertices[i].x > max.x) 	max.x = mesh->mVertices[i].x;
 					if (mesh->mVertices[i].y > max.y) 	max.y = mesh->mVertices[i].y;
 					if (mesh->mVertices[i].z > max.z)   max.z = mesh->mVertices[i].z;
 							
-					
-
 				}
 
 				if (mesh->HasNormals()) {

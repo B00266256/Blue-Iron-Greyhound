@@ -1,6 +1,8 @@
 #include "MeshComponent.h"
 #include "OpenglRenderer.h"
 #include "GameObject.h"
+#include "RigidBodyComponent.h"
+class RigidBodyComponent;
 
 MeshComponent::MeshComponent(std::string name)
 {
@@ -44,7 +46,18 @@ void MeshComponent::setMinMax(vector<glm::vec3> minmax)
 {
 	getUser()->setMin(minmax[0]);
 	getUser()->setMax(minmax[1]);
+
+	//getUser()->getComponent<RigidBodyComponent>()->setboundingVolume(minmax[0], minmax[1]);
+
+	RigidBodyComponent* body = getUser()->getComponent<RigidBodyComponent>();
+
+	if(body != NULL)
+	body->setboundingVolume(minmax[0], minmax[1]);
+
+
+	
 }
+
 
 
 void MeshComponent::setMeshes(vector<int> meshIDs)

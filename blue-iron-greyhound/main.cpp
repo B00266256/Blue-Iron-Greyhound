@@ -17,6 +17,7 @@ commentcomment chloe
 #include "MovementComponent.h"
 #include "SDLInputSystem.h"
 #include "Collisions.h"
+#include "RigidBodyComponent.h"
 
 //Temp includes for testing during development
 #include "SDL.h"
@@ -35,7 +36,7 @@ double dt;
 int main(int argc, char *argv[])
 {
 	//camera set up
-	Camera *cameraComponent = new Camera(glm::vec3(-2.0f, 2.0f, 30.0f), glm::vec3(0.0f, 1.0f, -1.0f), glm::vec3(0.0f, 1.0f, -1.0f), 0.0);
+	Camera *cameraComponent = new Camera(glm::vec3(-2.0f, 10.0f, 30.0f), glm::vec3(0.0f, 1.0f, -1.0f), glm::vec3(0.0f, 1.0f, -1.0f), 0.0);
 	cameraComponent->init();
 
 	//render set up
@@ -51,12 +52,18 @@ int main(int argc, char *argv[])
 	
 
 	//First Object - Acting as player (camera component / movement component)
-	GameObject *Player = new GameObject("Collada");
+	GameObject *Player = new GameObject("player");
 	Player->setTranslation(glm::vec3(-5.0f, 0.0f, 60.0f));
 	Player->setScaling(glm::vec3(1.0f, 1.0f, 1.0f));
 	Player->setCameraRotation(0.0);
 	Player->setRenderRotateVec(glm::vec3(0, -1, 0));
 	Player->setRenderRotateDeg(0);
+
+	//testing rigid body class
+	RigidBodyComponent* rigidBody = new RigidBodyComponent("Rigid Body");
+	Player->addComponent(rigidBody);
+	//
+
 	MeshComponent* meshComponent = new MeshComponent("sphere");
 	Player->addComponent(meshComponent);
 	meshComponent->setRenderer(renderer);
@@ -64,7 +71,7 @@ int main(int argc, char *argv[])
 	meshComponent->loadTexture("tex/scifiFloor.bmp");
 	MovementComponent *moveComponent = new MovementComponent("moveComponent");
 	moveComponent->setInput(inputSystem);
-	
+
 	Player->addComponent(cameraComponent);
 	Player->addComponent(moveComponent);
 
@@ -227,7 +234,7 @@ int main(int argc, char *argv[])
 
 
 
-	//road barrier
+	//road barrier 1
 	GameObject *barrier = new GameObject("old building");
 	barrier->setTranslation(glm::vec3(-20.0f, -5.0f, 90.0f));
 	barrier->setScaling(glm::vec3(0.5f, 0.5f, 0.5f));
@@ -239,7 +246,7 @@ int main(int argc, char *argv[])
 	barriermesh->loadTexture("roadbarrier/BARRIERE.bmp");
 	
 
-	//road barrier
+	//road barrier 2
 	GameObject *barrier2 = new GameObject("old building");
 	barrier2->setTranslation(glm::vec3(0.0f, -5.0f, 90.0f));
 	barrier2->setScaling(glm::vec3(0.5f, 0.5f, 0.5f));
@@ -250,6 +257,7 @@ int main(int argc, char *argv[])
 	barriermesh2->loadObject("BARRIERE.obj");
 	barriermesh2->loadTexture("roadbarrier/BARRIERE.bmp");
 
+	//planet in the sky
 	GameObject *AlienPlanet = new GameObject("old building");
 	AlienPlanet->setTranslation(glm::vec3(-200, 200, -300));
 	AlienPlanet->setScaling(glm::vec3(50, 50, 50));
@@ -286,8 +294,6 @@ int main(int argc, char *argv[])
 	collision.addStaticObject(walls5); 
 	collision.addStaticObject(walls6);
 	collision.addStaticObject(trashPile);
-	
-	//collision.addStaticObject(buildingObject);
 	collision.addStaticObject(watchTower);
 	
 	

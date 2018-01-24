@@ -14,18 +14,26 @@ Camera::Camera(glm::vec3 eye, glm::vec3 at, glm::vec3 up, float r)
 
 void Camera::init()
 {
-	offset = glm::vec3(0.0, 2.0, 10.0);
+	///offset = glm::vec3(0.0, 30.0, 10.0);				//top down offset
+	offset = glm::vec3(0.0, 5.0, 20.0);					//first person offset
 }
 
 
 void Camera::update()
 {
-	this->eye = getUser()->getTranslation();
+	glm::vec3 playerPos = getUser()->getTranslation();
+	this->eye = playerPos;
 	this->eye += offset;
 
 	this->rotation = getUser()->getCameraRotation();
 
+
+	//Nice top down perspective
+	///this->at = glm::vec3(playerPos.x + 1.0f*std::sin(rotation*DEG_TO_RADIAN), playerPos.y, playerPos.z - 1.0f*std::cos(rotation*DEG_TO_RADIAN));
+
+	//First person perspective
 	this->at = glm::vec3(eye.x + 1.0f*std::sin(rotation*DEG_TO_RADIAN), eye.y, eye.z - 1.0f*std::cos(rotation*DEG_TO_RADIAN));
+	
 
 }
 

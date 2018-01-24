@@ -39,6 +39,7 @@ public:
 	void setScaling(glm::vec3 scale);
 
 	void setMinMax(vector<glm::vec3> minmax);
+	
 
 	void setMeshes(vector<int> meshIDs);
 	vector<int> getMeshes();

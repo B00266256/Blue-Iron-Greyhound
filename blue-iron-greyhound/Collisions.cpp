@@ -1,72 +1,11 @@
 #include "Collisions.h"
 
-//I was hoping to draw the bounding boxes
+//I was hoping to draw the bounding boxes but this doesn't work
 void Collisions::draw()
 {
-	GLuint VAO;
-	// generate and set up a VAO for the mesh
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
 
-	GLfloat vertices[] = {
-		-0.5, -0.5, -0.5, 1.0,
-		0.5, -0.5, -0.5, 1.0,
-		0.5,  0.5, -0.5, 1.0,
-		-0.5,  0.5, -0.5, 1.0,
-		-0.5, -0.5,  0.5, 1.0,
-		0.5, -0.5,  0.5, 1.0,
-		0.5,  0.5,  0.5, 1.0,
-		-0.5,  0.5,  0.5, 1.0,
-	};
+	//CODE THAT DRAWS THE BOUNDING VOLUMES
 
-
-	GLfloat colours[] = {
-		0.0,  1.0,  0.0, 1.0,
-		0.0,  1.0,  0.0, 1.0,
-		0.0,  1.0,  0.0, 1.0,
-		0.0,  1.0,  0.0, 1.0,
-		0.0,  1.0,  0.0, 1.0,
-		0.0,  1.0,  0.0, 1.0,
-		0.0,  1.0,  0.0, 1.0,
-		0.0,  1.0,  0.0, 1.0,
-	};
-	GLuint VBO;
-	glGenBuffers(1, &VBO);
-
-
-
-	// VBO for vertex data
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, 32 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-	//pMeshBuffers[0] = VBO;
-
-	// VBO for colour data
-	if (colours != nullptr) {
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, 32 * sizeof(GLfloat), colours, GL_STATIC_DRAW);
-		glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(1);
-		//pMeshBuffers[1] = VBO;
-	}
-
-	//glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	
-	glm::mat4 modelview(1);
-	modelview = glm::translate(modelview, glm::vec3(-5.0f, 0.0f, 60.0f));
-	OpenglUtils::setUniformMatrix4fv(3, "modelview", glm::value_ptr(modelview));
-
-	//vertexArrayMap.insert(pair<GLuint, GLuint *>(VAO, pMeshBuffers));
-
-	glBindVertexArray(VAO);	// Bind mesh VAO
-	glDrawElements(GL_LINES, 32, GL_INT, 0);	// draw VAO 
-	glBindVertexArray(0);
-
-	// VAO;
 }
 
 
@@ -94,7 +33,6 @@ void Collisions::collisionSearch()
 
 	glm::vec3 translationVector;
 
-	
 
 
 /*
