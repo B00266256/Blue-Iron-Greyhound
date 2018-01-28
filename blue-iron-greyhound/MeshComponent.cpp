@@ -6,11 +6,12 @@ class RigidBodyComponent;
 
 MeshComponent::MeshComponent(std::string name)
 {
+
 }
 
 void MeshComponent::init()
 {
-
+	
 }
 
 
@@ -50,9 +51,10 @@ void MeshComponent::setMinMax(vector<glm::vec3> minmax)
 	//getUser()->getComponent<RigidBodyComponent>()->setboundingVolume(minmax[0], minmax[1]);
 
 	RigidBodyComponent* body = getUser()->getComponent<RigidBodyComponent>();
+	glm::vec3 scale = getUser()->getScaling();
 
 	if(body != NULL)
-	body->setboundingVolume(minmax[0], minmax[1]);
+	body->setboundingVolume(minmax[0] * scale, minmax[1] * scale);
 
 
 	

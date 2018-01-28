@@ -29,7 +29,9 @@ public:
 	void init();
 	void update();
 
+	void setCollisionSystem(CollisionSystem* collisionSys);
 
+	glm::vec3 prevPosition;
 private:
 	bool isInitialised;
 	bool isAsleep;
@@ -40,8 +42,5 @@ private:
 	string boundingType;
 
 	boundingVolume* boundingVolume;
-
-	////An objects min and max in world space. This changes when an objects world position changes and these values are what are tested for collisions
-	glm::vec3 worldMin;
-	glm::vec3 worldMax;
+	
 };

@@ -2,8 +2,7 @@
 #include "GameObject.h"
 
 
-//Specify the type of bounding box but it will only be created when a mesh is given to the rigid bodys user. The mesh will access the rigid 
-//body and create and initliased according to defined bodyType (AABB or Sphere at this point).
+
 RigidBodyComponent::RigidBodyComponent(string name)
 {
 	this->name = name;
@@ -11,14 +10,11 @@ RigidBodyComponent::RigidBodyComponent(string name)
 }
 
 
-
 void RigidBodyComponent::init()
 {
-	//bodyType = "STATIC";
+	prevPosition = glm::vec3(0, 0, 0);
 	isAsleep = false;
-	isInitialised = false;
-
-	
+	isInitialised = false;	
 }
 
 boundingVolume* RigidBodyComponent::getBoundingVolume()
@@ -29,34 +25,20 @@ boundingVolume* RigidBodyComponent::getBoundingVolume()
 
 void RigidBodyComponent::update()
 {
-	
-
-	//create bounding volume if not done already
-	//if (!isInitialised)
-	//{
-	//	boundingType = "AABB"; 
-
-	//	//get vales from mesh/vertice loading
-	//	//createAABB(getUser()->getMin(), getUser()->getMax());
-
-	//	
-	//	boundingVolume->update(pos);
-
-	//	isInitialised = true;
-	//}
 
 	//If dynamic update the bounding volumes position
+	//and check for collisions
 	if (bodyType == "DYNAMIC")
 	{
 		boundingVolume->update(getUser()->getPosition());
+		collisionSystem->collisionCheck(this);
 	}
-
 
 }
 
 
-//sets values for the boudning volume
-// if the bounding volume is a sphere then one point is treated as center and the other point a point on the circumference of the circle
+// sets values for the boudning .  if the bounding volume is a sphere  then one
+// point is treated as center and the other point a point on the circumference of the circle
 void RigidBodyComponent::setboundingVolume(glm::vec3 p1, glm::vec3 p2)
 {
 	glm::vec3 pos = getUser()->getPosition();
@@ -81,12 +63,16 @@ void RigidBodyComponent::setboundingVolume(glm::vec3 p1, glm::vec3 p2)
 }
 
 
+void RigidBodyComponent::setCollisionSystem(CollisionSystem* collisionSys)
+{
+	collisionSystem = collisionSys;
+}
+
 void RigidBodyComponent::createAABB(glm::vec3 min, glm::vec3 max)
 {
 	boundingType = "AABB";
 	boundingVolume = new AABB(min, max);
 	isInitialised = true;
-	collisionSystem->addBody(this);
 }
 
 
@@ -95,7 +81,6 @@ void RigidBodyComponent::createSphere(glm::vec3 center, float radius)
 	boundingType = "SPHERE";
 	boundingVolume = new Sphere(center, radius);
 	isInitialised = true;
-	collisionSystem->addBody(this);
 }
 
 
@@ -111,10 +96,6 @@ void RigidBodyComponent::setBodyType(string bodytype)
 	{
 		collisionSystem->addStaticBody(this);
 	}
-
-
-
-	collisionSystem->addBody(this);
 }
 
 string RigidBodyComponent::getBodyType()
@@ -134,10 +115,10 @@ bool RigidBodyComponent::isInit()
 
 
 
-
 RigidBodyComponent::~RigidBodyComponent()
 {
 	delete boundingVolume;
+	delete this;
 }
 
   
